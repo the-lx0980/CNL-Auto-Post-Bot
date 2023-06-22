@@ -34,7 +34,9 @@ async def editing(bot, message):
 
       #  has_excluded_pattern = any(re.search(pattern, file_caption, re.IGNORECASE) for pattern in excluded_patterns)
 
-        if not series_block in file_caption:
+        if series_block in file_caption:
+            return
+            
             text = file_caption
             file_caption = remove_content(text)
             
