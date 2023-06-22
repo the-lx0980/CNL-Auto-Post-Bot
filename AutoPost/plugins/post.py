@@ -25,9 +25,9 @@ async def editing(bot, message):
             filename = fname.replace("_", ".")
             file_caption = f"`{filename}`"
 
-        # Remove username and link from caption
-        file_caption = file_caption.replace("@MaxPlayHD", "").replace("👉", "")
-
+        text = file_caption
+        file_caption = remove_content(text)
+        
         try:
             if caption_position == "top":
                 await bot.copy_message(
@@ -40,3 +40,11 @@ async def editing(bot, message):
 
         except:
             pass
+
+
+def remove_content(text):
+    # Remove username and link
+    text = text.replace("@MaxPlayHD", "").replace("👉", "")
+    # Remove additional text
+    text = text.replace("Join Us On Telegram", "").replace("Support us", "").replace("🙏", "").replace("❤️", "")
+    return text
