@@ -4,7 +4,7 @@
 from . import API_ID, API_HASH, SESSION, LOGGER
 from pyrogram import Client, __version__
 
-class Userbot(Client):
+class UserBot(Client):
     def __init__(self):
         super().__init__(
             "userClient",
