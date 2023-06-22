@@ -30,12 +30,13 @@ async def editing(bot, message):
             filename = fname.replace("_", ".")
             file_caption = f"`{filename}`"
 
-        if any(series_text in file_caption for series_text in series_block):
-            return
-            
+        
+
+            if str(series_block) in str(file_caption):
+                return 
             text = file_caption
             file_caption = remove_content(text)
-            
+        
             try:  
                 if caption_position == "top":
                     caption = f"{file_caption}\n{caption_text}"
