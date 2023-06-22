@@ -33,6 +33,9 @@ async def editing(bot, message):
         if any(block in file_caption for block in series_block):
             return
 
+        text = file_caption
+        file_caption = remove_content(text)
+        
         try:
             if caption_position == "top":
                 caption = f"{file_caption}\n{caption_text}"
