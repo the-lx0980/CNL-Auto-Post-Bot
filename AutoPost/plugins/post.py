@@ -30,27 +30,22 @@ async def editing(bot, message):
             filename = fname.replace("_", ".")
             file_caption = f"`{filename}`"
 
-        
+        if any(block in file_caption for block in series_block):
+            return
 
-            if str(series_block) in str(file_caption):
-                return 
-            text = file_caption
-            file_caption = remove_content(text)
-        
-            try:  
-                if caption_position == "top":
-                    caption = f"{file_caption}\n{caption_text}"
-                    caption = '\n'.join(line for line in caption.split('\n') if line.strip())
-                    await bot.copy_message(
-                        chat_id=-1001986761426,
-                        from_chat_id=-1001921917995,
-                        message_id=message.id,
-                        caption=caption,
-                        parse_mode=enums.ParseMode.MARKDOWN
-                    )
-
-            except:
-                pass
+        try:
+            if caption_position == "top":
+                caption = f"{file_caption}\n{caption_text}"
+                caption = '\n'.join(line for line in caption.split('\n') if line.strip())
+                await bot.copy_message(
+                    chat_id=-1001986761426,
+                    from_chat_id=-1001921917995,
+                    message_id=message.id,
+                    caption=caption,
+                    parse_mode=enums.ParseMode.MARKDOWN
+                )
+        except:
+            pass
 
 
 def remove_content(text):
