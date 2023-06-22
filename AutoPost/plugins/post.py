@@ -11,8 +11,6 @@ caption_position = "top".lower()
 
 media_filter = filters.document | filters.video
 
-series_block
-
 
 
 @Client.on_message(filters.channel & media_filter)
