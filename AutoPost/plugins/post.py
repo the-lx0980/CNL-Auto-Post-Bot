@@ -7,6 +7,8 @@ from pyrogram import Client, filters, enums
 logger = logging.getLogger(__name__)
 caption_position = "top".lower()
 
+media_filter = filters.document | filters.video
+
 @Client.on_message(filters.channel & (media_filter))
 async def editing(bot, message):
       try:
