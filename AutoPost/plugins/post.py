@@ -30,11 +30,13 @@ async def editing(bot, message):
         
         try:
             if caption_position == "top":
+                caption = f"{file_caption}\n{caption_text}"
+                caption = '\n'.join(line for line in caption.split('\n') if line.strip())
                 await bot.copy_message(
                     chat_id=-1001986761426,
                     from_chat_id=-1001921917995,
                     message_id=message.id,
-                    caption=file_caption + '\n\n' + f"**{caption_text}**",
+                    caption=caption,
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
 
