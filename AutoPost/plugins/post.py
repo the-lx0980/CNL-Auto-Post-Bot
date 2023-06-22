@@ -3,6 +3,7 @@
 
 import re
 import logging
+from AutoPost.helper_func import series_block
 from pyrogram import Client, filters, enums
 
 logger = logging.getLogger(__name__)
@@ -10,12 +11,7 @@ caption_position = "top".lower()
 
 media_filter = filters.document | filters.video
 
-excluded_patterns = [
-    r"\b(Session|EP|Episode)\b",
-    r"\b\d+\b",
-    r"\bS\d+\b",
-    r"\bSample\b"
-]
+series_block
 
 
 
@@ -36,9 +32,9 @@ async def editing(bot, message):
             filename = fname.replace("_", ".")
             file_caption = f"`{filename}`"
 
-        has_excluded_pattern = any(re.search(pattern, file_caption, re.IGNORECASE) for pattern in excluded_patterns)
+      #  has_excluded_pattern = any(re.search(pattern, file_caption, re.IGNORECASE) for pattern in excluded_patterns)
 
-        if not has_excluded_pattern:
+        if not series_block in file_caption:
             text = file_caption
             file_caption = remove_content(text)
             
