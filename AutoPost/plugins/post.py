@@ -19,7 +19,7 @@ excluded_patterns = [
 
 
 
-@Client.on_message(filters.channel & (media_filter))
+@Client.on_message(filters.channel & media_filter)
 async def editing(bot, message):
     try:
         media = message.document or message.video or message.audio
@@ -27,6 +27,7 @@ async def editing(bot, message):
     except:
         caption_text = ""
         pass
+
     if message.document or message.video or message.audio:
         if message.caption:
             file_caption = f"**{message.caption}**"
@@ -41,7 +42,7 @@ async def editing(bot, message):
             text = file_caption
             file_caption = remove_content(text)
             
-            try:
+            try:  
                 if caption_position == "top":
                     caption = f"{file_caption}\n{caption_text}"
                     caption = '\n'.join(line for line in caption.split('\n') if line.strip())
