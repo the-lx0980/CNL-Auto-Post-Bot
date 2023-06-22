@@ -32,9 +32,7 @@ async def editing(bot, message):
             filename = fname.replace("_", ".")
             file_caption = f"`{filename}`"
 
-      #  has_excluded_pattern = any(re.search(pattern, file_caption, re.IGNORECASE) for pattern in excluded_patterns)
-
-        if series_block in file_caption:
+        if any(series_text in file_caption for series_text in series_block):
             return
             
             text = file_caption
