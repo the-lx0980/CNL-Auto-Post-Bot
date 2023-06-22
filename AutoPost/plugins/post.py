@@ -35,15 +35,14 @@ async def editing(bot, message):
             filename = fname.replace("_", ".")
             file_caption = f"`{filename}`"
 
-
         has_excluded_pattern = any(re.search(pattern, file_caption, re.IGNORECASE) for pattern in excluded_patterns)
-        if not has_excluded_pattern:        
-        
-        text = file_caption
-        file_caption = remove_content(text)
-        
-        try:
-            if caption_position == "top":
+
+        if not has_excluded_pattern:
+            text = file_caption
+            file_caption = remove_content(text)
+
+            try:
+                if caption_position == "top":
                 caption = f"{file_caption}\n{caption_text}"
                 caption = '\n'.join(line for line in caption.split('\n') if line.strip())
                 await bot.copy_message(
