@@ -12,5 +12,5 @@ series_block = [
     "S31", "S32", "S33", "S34", "S35", "S36", "S37", "S38", "S29", "S40",
 
     "Series", "SERIES", "series", "Sample", "SAMPLE", "sample", "Season",
-    "SEASON", "season", "HEVC"
+    "SEASON", "season", "HEVC", "10-Bit",
 ]
