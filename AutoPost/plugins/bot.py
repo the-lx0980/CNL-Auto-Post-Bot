@@ -30,7 +30,7 @@ async def callback_handler(bot, update):
         )
 
         try:
-            reply = await bot.listen(user_id, timeout=30)
+            reply = await bot.ask(text = "Send Your Caption", chat_id = user_id, filters=filters.text, timeout=30)
         except asyncio.TimeoutError:
             await bot.send_message(
                 chat_id=user_id,
