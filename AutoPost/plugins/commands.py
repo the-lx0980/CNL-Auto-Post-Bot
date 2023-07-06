@@ -1,5 +1,5 @@
 # (c) Lx 0980
-
+Hell = """
 from AutoPost.Chat_msg import ChatMSG
 from pyrogram import filters, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -17,7 +17,7 @@ async def start(client, message):
             ]
         )
     )
+"""
 
-    
 
 
