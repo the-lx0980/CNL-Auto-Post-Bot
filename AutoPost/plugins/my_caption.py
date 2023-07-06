@@ -1,6 +1,9 @@
+import logging
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import MessageNotModified
+
+logger = logging.getLogger(__name__)
 
 CAPTION_DATA = {}
 
