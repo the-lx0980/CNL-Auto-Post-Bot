@@ -1,7 +1,7 @@
 import logging
 import asyncio
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors import MessageNotModified
 
 logger = logging.getLogger(__name__)
@@ -23,9 +23,9 @@ async def start(bot, message):
     )
 
 @Client.on_callback_query()
-async def callback_handler(bot, update):
-    query_data = update.data
-    user_id = update.chat.id
+async def callback_handler(bot: Client, msg_query: CallbackQuery):
+    query_data = msg_query.data
+    user_id = msg_query.from_user.id
     
     if query_data == 'set_caption':
         reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text)         
@@ -38,6 +38,7 @@ async def callback_handler(bot, update):
     elif query_data == 'check_caption':
         caption = CAPTION_DATA.get(user_id)
         if caption:
+            chat_ids = .from_user.id
             await bot.send_message(
                 chat_id=user_id,
                 text=f"Your saved caption is:\n{caption}"
