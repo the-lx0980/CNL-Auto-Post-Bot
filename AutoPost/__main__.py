@@ -13,10 +13,10 @@ logging.basicConfig(level=logging.INFO, encoding="utf-8", format="%(asctime)s - 
 app = Client(
     "Auto-Post-Bot",
     api_id=21288218,
-    api_hash="670deb1f30b648fbb4f744e406161942",
+    api_hash="dd47d5c4fbc31534aa764ef9918b3acd",
     bot_token="5466682882:AAEd0W0HHOoKokOlOU2NCNJDb9Zk6_f0HnI", 
     in_memory=True,
-    plugins={'root':'AutoPost.plugins'},
+    plugins={'root':'AutoPost/plugins'},
 )
 
 
