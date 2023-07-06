@@ -1,7 +1,6 @@
 # (c) @TheLx0980
 # Year : 2023
 
-import env
 import logging
 from pyromod import listen
 from . import API_ID, API_HASH, SESSION, LOGGER
