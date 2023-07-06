@@ -31,14 +31,13 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
         reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text)         
         if reply.text:
             CAPTION_DATA[user_id] = reply.text
-            await update.answer("Caption set successfully.")
+            await msg_query.answer("Caption set successfully.")
         else:
-            await update.answer("Invalid caption. Please try again.")
+            await msg_query.answer("Invalid caption. Please try again.")
 
     elif query_data == 'check_caption':
         caption = CAPTION_DATA.get(user_id)
         if caption:
-            chat_ids = .from_user.id
             await bot.send_message(
                 chat_id=user_id,
                 text=f"Your saved caption is:\n{caption}"
