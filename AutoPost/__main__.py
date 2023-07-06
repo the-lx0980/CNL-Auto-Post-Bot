@@ -14,7 +14,7 @@ app = Client(
     "Auto-Post-Bot",
     api_id=21288218,
     api_hash="dd47d5c4fbc31534aa764ef9918b3acd",
-    bot_token="5466682882:AAEd0W0HHOoKokOlOU2NCNJDb9Zk6_f0HnI", 
+    bot_token="6285956621:AAHbImqbdlbHVd25xzuGydfsgz9GNTJclaE", 
     in_memory=True,
     plugins={'root':'AutoPost/plugins'},
 )
