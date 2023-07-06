@@ -1,4 +1,4 @@
-import logging
+ import logging
 import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -25,20 +25,10 @@ async def start(bot, message):
 @Client.on_callback_query()
 async def callback_handler(bot, update):
     query_data = update.data
-    user_id = update.from_user.id
+    user_id = update.chat.id
     
     if query_data == 'set_caption':
-        await bot.send_message(
-            chat_id=user_id,
-            text="Please send your desired caption within 30 seconds."
-        )
-
-        try:
-            reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text, timeout=30)
-        except asyncio.TimeoutError:
-            await update.answer("You didn't provide a caption.")
-            return
-            
+        reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text)         
         if reply.text:
             CAPTION_DATA[user_id] = reply.text
             await update.answer("Caption set successfully.")
