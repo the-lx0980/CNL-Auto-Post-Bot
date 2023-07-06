@@ -6,12 +6,15 @@ CAPTION_DATA = {}
 
 @Client.on_message(filters.private & filters.command("startt"))
 async def start(bot, message):
-    buttons = [[
-        InlineKeyboardButton('Set Caption', callback_data='setcaption')
-    ]]
+    buttons = [
+        [
+            InlineKeyboardButton('Set Caption', callback_data='setcaption'),
+            InlineKeyboardButton('Check Caption', callback_data='checkcaption')
+        ]
+    ]
     reply_markup = InlineKeyboardMarkup(buttons)
     await message.reply_text(
-        text="Welcome! Click the button below to set the caption.",
+        text="Welcome! Click the buttons below to set or check the caption.",
         reply_markup=reply_markup
     )
 
@@ -45,6 +48,19 @@ async def callback_handler(bot, update):
                     chat_id=user_id,
                     text="Invalid caption. Please try again."
                 )
+    
+    elif query_data == 'checkcaption':
+        caption = CAPTION_DATA.get(user_id)
+        if caption:
+            await bot.send_message(
+                chat_id=user_id,
+                text=f"Your saved caption is:\n{caption}"
+            )
+        else:
+            await bot.send_message(
+                chat_id=user_id,
+                text="No caption found. Please set a caption first."
+            )
 
 @Client.on_message(filters.text & filters.private)
 async def handle_text_message(bot, message):
