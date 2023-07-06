@@ -1,4 +1,5 @@
 import logging
+import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import MessageNotModified
@@ -34,7 +35,7 @@ async def callback_handler(bot, update):
 
         try:
             reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text, timeout=30)
-        except MessageNotModified:
+        except asyncio.TimeoutError:
             await update.answer("You didn't provide a caption.")
             return
         except Exception as e:
