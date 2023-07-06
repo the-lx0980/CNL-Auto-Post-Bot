@@ -1,15 +1,15 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-import asyncio
+from pyrogram.errors import MessageNotModified
 
 CAPTION_DATA = {}
 
-@Client.on_message(filters.private & filters.command("startt"))
+@Client.on_message(filters.private & filters.command("start"))
 async def start(bot, message):
     buttons = [
         [
-            InlineKeyboardButton('Set Caption', callback_data='setcaption'),
-            InlineKeyboardButton('Check Caption', callback_data='checkcaption')
+            InlineKeyboardButton('Set Caption', callback_data='set_caption'),
+            InlineKeyboardButton('Check Caption', callback_data='check_caption')
         ]
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
@@ -23,33 +23,29 @@ async def callback_handler(bot, update):
     query_data = update.data
     user_id = update.from_user.id
     
-    if query_data == 'setcaption':
+    if query_data == 'set_caption':
         await bot.send_message(
             chat_id=user_id,
             text="Please send your desired caption within 30 seconds."
         )
 
         try:
-            reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text)
-        except asyncio.TimeoutError:
-            await bot.send_message(
-                chat_id=user_id,
-                text="Caption not set. Timeout reached."
-            )
+            reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text, timeout=30)
+        except MessageNotModified:
+            await update.answer("You didn't provide a caption.")
+            return
+        except Exception as e:
+            await update.answer("An error occurred while setting the caption.")
+            print(e)
+            return
+
+        if reply.text:
+            CAPTION_DATA[user_id] = reply.text
+            await update.answer("Caption set successfully.")
         else:
-            if reply.text:
-                CAPTION_DATA[user_id] = reply.text
-                await bot.send_message(
-                    chat_id=user_id,
-                    text="Caption set successfully."
-                )
-            else:
-                await bot.send_message(
-                    chat_id=user_id,
-                    text="Invalid caption. Please try again."
-                )
-    
-    elif query_data == 'checkcaption':
+            await update.answer("Invalid caption. Please try again.")
+
+    elif query_data == 'check_caption':
         caption = CAPTION_DATA.get(user_id)
         if caption:
             await bot.send_message(
@@ -61,4 +57,3 @@ async def callback_handler(bot, update):
                 chat_id=user_id,
                 text="No caption found. Please set a caption first."
             )
-
