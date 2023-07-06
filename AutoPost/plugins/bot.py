@@ -62,11 +62,3 @@ async def callback_handler(bot, update):
                 text="No caption found. Please set a caption first."
             )
 
-@Client.on_message(filters.text & filters.private)
-async def handle_text_message(bot, message):
-    user_id = message.from_user.id
-    caption = CAPTION_DATA.get(user_id)
-    if caption:
-        await message.reply_text(text=message.text, caption=caption)
-    else:
-        await message.reply_text(text=message.text)
