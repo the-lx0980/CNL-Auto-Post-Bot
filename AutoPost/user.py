@@ -6,8 +6,8 @@ from pyromod import listen
 from . import API_ID, API_HASH, SESSION, LOGGER
 from pyrogram import Client, __version__
 
-logging.basicConfig(level=logging.INFO, encoding="utf-8", format="%(asctime)s - %(levelname)s - \033[32m%(pathname)s: \033[31m\033[1m%(message)s \033[0m")
-
+logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 class UserBot(Client):
     def __init__(self):
