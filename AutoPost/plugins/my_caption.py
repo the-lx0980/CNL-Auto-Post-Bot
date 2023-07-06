@@ -38,11 +38,7 @@ async def callback_handler(bot, update):
         except asyncio.TimeoutError:
             await update.answer("You didn't provide a caption.")
             return
-        except Exception as e:
-            await update.answer("An error occurred while setting the caption.")
-            print(e)
-            return
-
+            
         if reply.text:
             CAPTION_DATA[user_id] = reply.text
             await update.answer("Caption set successfully.")
