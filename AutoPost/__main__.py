@@ -2,6 +2,7 @@
 # Year : 2023
 # Language : Python 3
 
+import pyromod
 import logging
 from pyrogram import Client, idle
 from pyromod import listen  # type: ignore
