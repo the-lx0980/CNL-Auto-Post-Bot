@@ -1,7 +1,7 @@
 import logging
 import asyncio
 from pyromod import listen
-from AutoPost.bot import app as Bot
+from AutoPost.bot import Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors import MessageNotModified
