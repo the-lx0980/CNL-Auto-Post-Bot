@@ -30,12 +30,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     user_id = cb.from_user.id
     
     if query_data == 'set_caption':
-        answer = await client.ask(
-            identifier="@cenwenex", # if cb.message.chat.id else cb.chat.id,
-            text='Send me your name:',
-            parse_mode=enums.ParseMode.MARKDOWN
-        )
-
+        answer = await cb.message.chat.ask("Send me your name", parse_mode=enums.ParseMode.MARKDOWN)
         await answer.request.edit_text("Name received!")
         await answer.reply(f'Your name is: {answer.text}', quote=True)
         reply = answer.text
