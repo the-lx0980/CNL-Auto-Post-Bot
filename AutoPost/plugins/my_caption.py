@@ -57,6 +57,7 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
 
 @Client.on_message(filters.private & filters.command("test"))
 async def snd_something(client, message):
+    chat_id = message.chat.id
     asking = await c.ask(chat_id, 'send something..')
     await message.reply_text(f"Your text: {asking.text}")
     
