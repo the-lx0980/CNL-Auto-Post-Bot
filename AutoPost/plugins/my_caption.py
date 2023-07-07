@@ -29,7 +29,7 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
     user_id = msg_query.from_user.id
     
     if query_data == 'set_caption':
-        answer = await message.chat.ask('*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
+        answer = await msg_query.chat.ask('*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
         await answer.request.edit_text("Name received!")
         await answer.reply(f'Your name is: {answer.text}', quote=True)    
         reply = answer.txt
