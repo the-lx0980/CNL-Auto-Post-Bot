@@ -1,6 +1,7 @@
 import logging
 import asyncio
 from pyromod import listen
+from AutoPost import app as Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors import MessageNotModified
@@ -24,31 +25,31 @@ async def start(bot, message):
     )
 
 @Client.on_callback_query()
-async def callback_handler(bot: Client, msg_query: CallbackQuery):
-    query_data = msg_query.data
-    user_id = msg_query.from_user.id
+async def callback_handler(client: Bot, cb: CallbackQuery):
+    query_data = cb.data
+    user_id = cb.from_user.id
     
     if query_data == 'set_caption':
-        answer = await bot.ask(msg_query.message.chat, '*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
+        answer = await client.chat.ask(msg_query.message.chat, '*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
         await answer.request.edit_text("Name received!")
         await answer.reply(f'Your name is: {answer.text}', quote=True)
         reply = answer.text
         
         if reply:
             CAPTION_DATA[user_id] = reply
-            await msg_query.answer("Caption set successfully.")
+            await cb.answer("Caption set successfully.")
         else:
-            await msg_query.answer("Invalid caption. Please try again.")
+            await cb.answer("Invalid caption. Please try again.")
 
     elif query_data == 'check_caption':
         caption = CAPTION_DATA.get(user_id)
         if caption:
-            await bot.send_message(
+            await client.send_message(
                 chat_id=user_id,
                 text=f"Your saved caption is:\n{caption}"
             )
         else:
-            await bot.send_message(
+            await client.send_message(
                 chat_id=user_id,
                 text="No caption found. Please set a caption first."
             )
