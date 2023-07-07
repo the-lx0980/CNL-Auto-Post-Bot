@@ -28,8 +28,11 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
     user_id = msg_query.from_user.id
     
     if query_data == 'set_caption':
-        reply = await bot.ask(user_id, 'Please send your `caption`', filters=filters.text)         
-        if reply.text:
+        answer = await message.chat.ask('*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
+        await answer.request.edit_text("Name received!")
+        await answer.reply(f'Your name is: {answer.text}', quote=True)    
+        reply = answer.txt
+        if reply:
             CAPTION_DATA[user_id] = reply.text
             await msg_query.answer("Caption set successfully.")
         else:
