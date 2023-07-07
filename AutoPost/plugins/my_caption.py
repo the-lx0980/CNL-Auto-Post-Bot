@@ -29,12 +29,13 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
     user_id = msg_query.from_user.id
     
     if query_data == 'set_caption':
-        answer = await msg_query.chat.ask('*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
+        answer = await bot.ask(msg_query.message.chat.id, '*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
         await answer.request.edit_text("Name received!")
-        await answer.reply(f'Your name is: {answer.text}', quote=True)    
-        reply = answer.txt
+        await answer.reply(f'Your name is: {answer.text}', quote=True)
+        reply = answer.text
+        
         if reply:
-            CAPTION_DATA[user_id] = reply.text
+            CAPTION_DATA[user_id] = reply
             await msg_query.answer("Caption set successfully.")
         else:
             await msg_query.answer("Invalid caption. Please try again.")
@@ -51,6 +52,7 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
                 chat_id=user_id,
                 text="No caption found. Please set a caption first."
             )
+
 
 
 # from pyromod import listen
