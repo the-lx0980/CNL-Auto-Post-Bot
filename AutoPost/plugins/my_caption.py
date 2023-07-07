@@ -1,6 +1,7 @@
 import logging
 import asyncio
-from pyrogram import Client, filters
+from pyromod import listen
+from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors import MessageNotModified
 
@@ -50,3 +51,12 @@ async def callback_handler(bot: Client, msg_query: CallbackQuery):
                 chat_id=user_id,
                 text="No caption found. Please set a caption first."
             )
+
+
+# from pyromod import listen
+
+@app.on_message(filters.private & filters.command("test"))
+async def snd_something(client, message):
+    asking = await c.ask(chat_id, 'send something..')
+    await message.reply_text(f"Your text: {asking.text}")
+    
