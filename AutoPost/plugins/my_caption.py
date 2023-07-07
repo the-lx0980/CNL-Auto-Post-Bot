@@ -31,7 +31,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     
     if query_data == 'set_caption':
         answer = await client.ask(
-            identifier="cenwenex", # if cb.message.chat.id else cb.chat.id,
+            identifier="@cenwenex", # if cb.message.chat.id else cb.chat.id,
             text='Send me your name:',
             parse_mode=enums.ParseMode.MARKDOWN
         )
