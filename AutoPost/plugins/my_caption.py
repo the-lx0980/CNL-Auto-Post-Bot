@@ -65,4 +65,4 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
 async def snd_something(client, message):
     answer = await message.chat.ask('*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
     await answer.request.edit_text("Name received!")
-    await answer.reply(f'Your name is: {answer.text}', quote=True)    
+    await answer.reply(f'Your name is: {answer.text}\n username: {message.chat}', quote=True)    
