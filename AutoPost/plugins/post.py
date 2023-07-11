@@ -2,6 +2,7 @@
 # Year : 2023
 
 import re
+from . callback import CAPTION_DATA
 import logging
 from AutoPost.helper_func import series_block
 from pyrogram import Client, filters, enums
@@ -49,6 +50,20 @@ async def editing(bot, message):
                 )
         except:
             pass
+
+
+    autocaption = CAPTION_DATA.get(channel_id)
+    if autocaption:
+        if message.caption:
+            await bot.edit_message_caption(
+                chat_id = message.chat.id, 
+                message_id = message.message_id,
+                caption = f"**{message.caption}**" + "\n\n" + autocaption
+                parse_mode = enums.ParseMode.MARKDOWN
+            
+                
+            
+        
 
 
 def remove_content(text):
