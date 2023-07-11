@@ -1,3 +1,3 @@
 pyrogram==2.0.106
 tgcrypto==1.2.5
-pyromod
+https://github.com/the-lx0980/pyromod/archive/refs/heads/master.zip
