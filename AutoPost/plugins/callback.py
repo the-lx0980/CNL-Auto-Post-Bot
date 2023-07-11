@@ -37,11 +37,12 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         except TimeoutError:
             return await cb.reply("You reached the time limit of 5 minutes.\nTry Again!")
         if channel_id.text:
+            channel_id = int(channel_id.text)
             try:
-                chat = await client.get_chat(int(channel_id.text))
+                chat = await client.get_chat(channel_id)
             except Exception as e:
                 print(e)
-                return await cb.reply_text(f"Invalid Channel Id\n\n{e}")    
+                return await cb.reply(f"Invalid Channel Id\n\n{e}")    
         if chat.id:
             try:
                 caption = await cb.message.chat.ask(
