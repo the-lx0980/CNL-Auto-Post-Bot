@@ -26,11 +26,11 @@ async def start(bot, message):
 @Client.on_callback_query()
 async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data   
-    user_id = cb.from_user.id
+    chat_id = cb.chat.id
     if query_data == 'set_caption':
         try:
             channel_id = await client.ask(
-                chat_id=cb.chat.id,
+                chat_id=chat_id,
                 text="Send me your Channel ID with -100",
                 timeout=300
             )
@@ -45,7 +45,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         if chat.id:
             try:
                 caption = await client.ask(
-                    chat_id=cb.chat.id,
+                    chat_id=chat_id,
                     text="Send me your Channel Caption",
                     timeout=300
                 )
@@ -63,12 +63,12 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         caption = CAPTION_DATA.get(channel_id)
         if caption:
             await client.send_message(
-                chat_id=user_id,
+                chat_id=chat_id,
                 text=f"Your saved caption is:\n{caption}"
             )
         else:
             await client.send_message(
-                chat_id=user_id,
+                chat_id=chat_id,
                 text="No caption found. Please set a caption first."
             )
 
