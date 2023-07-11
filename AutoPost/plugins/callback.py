@@ -26,7 +26,7 @@ async def start(bot, message):
 @Client.on_callback_query()
 async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data   
-    chat_id = cb.chat.id
+    chat_id = cb.message.chat.id  
     if query_data == 'set_caption':
         try:
             channel_id = await client.ask(
