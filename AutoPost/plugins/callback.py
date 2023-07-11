@@ -2,7 +2,7 @@ import logging
 from asyncio.exceptions import TimeoutError
 from pyromod import listen
 from AutoPost.user import UserBot as Bot
-from pyrogram import Client, filters, enums
+from pyrogram import Client, filters, enums 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 
 logger = logging.getLogger(__name__)
@@ -29,13 +29,13 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     chat_id = cb.message.chat.id  
     if query_data == 'set_caption':
         try:
-            channel_id = await client.ask(
-                chat_id=chat_id,
+            channel_id = await cb.message.chat.ask(
                 text="Send me your Channel ID with -100",
-                timeout=300
+                timeout=300,
+                parse_mode=enums.ParseMode.HTML
             )
         except TimeoutError:
-            return await cb.reply("You reached Time limit of 5 min.\nTry Again!")
+            return await cb.reply("You reached the time limit of 5 minutes.\nTry Again!")
         if channel_id.text:
             try:
                 chat = await client.get_chat(int(channel_id.text))
@@ -44,13 +44,13 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                 return await cb.reply_text(f"Invalid Channel Id\n\n{e}")    
         if chat.id:
             try:
-                caption = await client.ask(
-                    chat_id=chat_id,
+                caption = await cb.message.chat.ask(
                     text="Send me your Channel Caption",
-                    timeout=300
+                    timeout=300,
+                    parse_mode=enums.ParseMode.HTML
                 )
             except TimeoutError:
-                return await cb.reply("You reached Time limit of 5 min.\nTry Again!")
+                return await cb.reply("You reached the time limit of 5 minutes.\nTry Again!")
         if caption.text:
             channel_id = chat.id
             CAPTION_DATA[channel_id] = caption.text
@@ -71,6 +71,3 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                 chat_id=chat_id,
                 text="No caption found. Please set a caption first."
             )
-
-
-
