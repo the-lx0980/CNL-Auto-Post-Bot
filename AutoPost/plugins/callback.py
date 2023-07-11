@@ -37,22 +37,22 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             return await cb.reply("You reached Time limit of 5 min.\nTry Again!")
         if channel_id.text:
             try:
-                chat = await client.get_chat(int(channel_id))
+                chat = await client.get_chat(int(channel_id.text))
             except Exception as e:
                 print(e)
-                return await cb.reply_text("Invalid Channel Id")    
+                return await cb.reply_text(f"Invalid Channel Id\n\n{e}")    
         if chat.id:
             try:
                 caption = await client.ask(
-                    chat_id= cb.chat.id,
+                    chat_id=cb.chat.id,
                     text="Send me your Channel Caption",
                     timeout=300
                 )
             except TimeoutError:
-            return await cb.reply("You reached Time limit of 5 min.\nTry Again!")
-        caption = caption.text
-        if caption:
-            CAPTION_DATA[channel_id] = caption
+                return await cb.reply("You reached Time limit of 5 min.\nTry Again!")
+        if caption.text:
+            channel_id = chat.id
+            CAPTION_DATA[channel_id] = caption.text
             await cb.answer("Caption set successfully.")
         else:
             await cb.answer("Invalid caption. Please try again.")
