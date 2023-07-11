@@ -54,14 +54,15 @@ async def editing(bot, message):
     """
     channel_id = message.chat.id
     autocaption = CAPTION_DATA.get(channel_id)
+    await message.reply_text(f"Here is Your Caption\n\n{autocaption}")
     if autocaption:
         if message.caption:
             try:
                 await bot.edit_message_caption(
-                    chat_id = message.chat.id, 
-                    message_id = message.id,
-                    caption = f"**{message.caption}**" + "\n\n" + autocaption,
-                    parse_mode = enums.ParseMode.MARKDOWN
+                    chat_id=message.chat.id,
+                    message_id=message.id,
+                    caption=f"**{message.caption}**" + "\n\n" + autocaption,
+                    parse_mode=enums.ParseMode.MARKDOWN
                 )
             except:
                 pass
