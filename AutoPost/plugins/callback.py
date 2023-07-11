@@ -27,16 +27,20 @@ async def start(bot, message):
 @Client.on_callback_query()
 async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data
-    user_id = cb.from_user.id
+    channel_id = cb.from_user.id
     
     if query_data == 'set_caption':
-        answer = await cb.message.chat.ask("Send me your name", parse_mode=enums.ParseMode.MARKDOWN)
-        await answer.request.edit_text("Name received!")
-        await answer.reply(f'Your name is: {answer.text}', quote=True)
-        reply = answer.text
-        
-        if reply:
-            CAPTION_DATA[user_id] = reply
+        try:
+            caption = await cb.ask(
+                chat_id= cb.chat.id,
+                text="Send me your name",
+                timeout=300
+            )
+        except TimeoutError:
+            return await cb.reply("You reached Time limit of 5 min.\nTry Again!")
+        caption = caption.text    
+        if caption:
+            CAPTION_DATA[channel_id] = caption
             await cb.answer("Caption set successfully.")
         else:
             await cb.answer("Invalid caption. Please try again.")
@@ -56,10 +60,3 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
 
 
 
-# from pyromod import listen
-
-@Client.on_message(filters.private & filters.command("test"))
-async def snd_something(client, message):
-    answer = await message.chat.ask('*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
-    await answer.request.edit_text("Name received!")
-    await answer.reply(f'Your name is: {answer.text}\n username: {message.chat}', quote=True)    
