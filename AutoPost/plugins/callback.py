@@ -26,6 +26,7 @@ async def start(bot, message):
 @Client.on_callback_query()
 async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data   
+    user_id = cb.from_user.id
     if query_data == 'set_caption':
         try:
             channel_id = await client.ask(
@@ -58,7 +59,8 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             await cb.answer("Invalid caption. Please try again.")
     
     elif query_data == 'check_caption':
-        caption = CAPTION_DATA.get(user_id)
+        channel_id = -1001547532818
+        caption = CAPTION_DATA.get(channel_id)
         if caption:
             await client.send_message(
                 chat_id=user_id,
