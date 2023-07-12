@@ -39,10 +39,11 @@ class Database:
             return (from_chat_id, to_chat_id)
         return None
 
-    def remove_forwarding(self, user_id):
+    def remove_forwarding_by_user(self, user_id):
         result = self.collection.delete_one({"user_id": user_id})
         return result.deleted_count > 0
 
     def remove_forwarding(self, user_id, from_chat_id, to_chat_id):
         result = self.collection.delete_one({"user_id": user_id, "from_chat_id": from_chat_id, "to_chat_id": to_chat_id})
         return result.deleted_count > 0
+
