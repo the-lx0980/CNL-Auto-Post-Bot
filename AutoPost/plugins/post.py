@@ -5,6 +5,7 @@ import re
 from .callback import CAPTION_DATA
 import logging
 from AutoPost.helper_func import series_block
+from AutoPost.database import Database
 from pyrogram import Client, filters, enums
 
 logger = logging.getLogger(__name__)
@@ -12,7 +13,7 @@ caption_position = "top".lower()
 
 media_filter = filters.document | filters.video
 
-
+db = Database()
 
 @Client.on_message(filters.channel & media_filter)
 async def editing(bot, message):
@@ -41,13 +42,15 @@ async def editing(bot, message):
             if caption_position == "top":
                 caption = f"{file_caption}\n{caption_text}"
                 caption = '\n'.join(line for line in caption.split('\n') if line.strip())
-                await bot.copy_message(
-                    chat_id=to_chat, 
-                    from_chat_id=from_chat, 
-                    message_id=message.id,
-                    caption=caption,
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
+                forwarding = db.get_forwarding()
+                for from_chat_id, to_chat_id in forwarding:
+                    await bot.copy_message(
+                        chat_id=to_chat_id,
+                        from_chat_id=from_chat_id,
+                        message_id=message.message_id,
+                        caption=caption,
+                        parse_mode=enums.ParseMode.MARKDOWN
+                    )
         except:
             pass
 
