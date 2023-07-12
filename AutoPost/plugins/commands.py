@@ -1,23 +1,14 @@
-# (c) Lx 0980
-Hell = """
-from AutoPost.Chat_msg import ChatMSG
-from pyrogram import filters, Client
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram import Client, filters
+from AutoPost.database import Database 
 
-@Client.on_message(filters.command("start") & filters.private & filters.incoming)
-async def start(client, message):
-    await message.reply(
-        text=ChatMSG.START_MSG,
-        disable_web_page_preview=True,
-        quote=True,
-        reply_markup=InlineKeyboardMarkup(
-            [
-                InlineKeyboardButton("Help", callback_data="help"),
-              #  InlineKeyboardButton("How Does This Works?", callback_data="abt")
-            ]
-        )
-    )
-"""
+db = Database()
 
-
-
+@Client.on_message(filters.private & filters.command("check_from_chat"))
+async def check_from_chat(client, message):
+    from_chat_id = str(message.chat.id)
+    entry = db.get_from_chat(from_chat_id)
+    if entry:
+        from_chat_id, to_chat_id = entry
+        await message.reply_text(f"Your 'from' chat ID: {from_chat_id}")
+    else:
+        await message.reply_text("You haven't set a forwarding connection.")
