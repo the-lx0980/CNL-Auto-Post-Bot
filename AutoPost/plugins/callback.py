@@ -25,13 +25,10 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data
     user_id = str(cb.message.chat.id)
     if query_data == 'set_forward':
-        try:
-            from_chat_txt = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:",
+        
+        from_chat_id = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:",
                                                       parse_mode=enums.ParseMode.HTML)
-        except Exception as e:
-            logger.exception(e)
-            return await cb.message.reply_text(f"Error:\n{str(e)}")
-        from_chat_id = from_chat_txt.text
+        from_chat_id = from_chat_id.text
         try:
             if not from_chat_id.startswith("-100"):
                 if len(from_chat_id) < 14:
