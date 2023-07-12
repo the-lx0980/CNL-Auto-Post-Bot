@@ -25,7 +25,6 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data
     user_id = str(cb.message.chat.id)
     if query_data == 'set_forward':
-        try:
         from_chat_id = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:",
                                                  parse_mode=enums.ParseMode.HTML)
         from_chat_id = from_chat_id.text
@@ -48,11 +47,9 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             except Exception:
                 return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
         
-        await client.send_message(chat_id = int(user_id), text = f"User ID: {user_id}\n Source ID: {from_chat_id}\nTarget ID: {to_chat_id}")
+        await client.send_message(chat_id=cb.message.chat.id, text=f"User ID: {user_id}\nSource ID: {from_chat_id}\nTarget ID: {to_chat_id}")
         added = db.add_forwarding(user_id, from_chat_id, to_chat_id)
         if added:
             await cb.message.reply_text(f"Forwarding set from `{from_chat_id}` to `{to_chat_id}`.")
         else:
             await cb.message.reply_text("You have already set forwarding for your channel IDs.")
-        
-
