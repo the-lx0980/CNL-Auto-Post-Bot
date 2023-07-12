@@ -1,19 +1,17 @@
 import logging
-from asyncio.exceptions import TimeoutError
 from pyromod import listen
 from AutoPost.user import UserBot as Bot
 from pyrogram import Client, filters, enums 
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery 
+from pyrogram.errors import BadRequest
 logger = logging.getLogger(__name__)
 
-CAPTION_DATA = {}
 
 @Client.on_message(filters.private & filters.command("start"))
 async def start(bot, message):
     buttons = [
         [
-            InlineKeyboardButton('Set Caption', callback_data='set_caption'),
+            InlineKeyboardButton('Set Forward', callback_data='set_caption'),
             InlineKeyboardButton('Check Caption', callback_data='check_caption')
         ]
     ]
@@ -29,13 +27,12 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     chat_id = cb.message.chat.id  
     if query_data == 'set_caption':
         try:
-            channel_id = await cb.message.chat.ask(
-                text="Send me your Channel ID with -100",
-                timeout=300,
-                parse_mode=enums.ParseMode.HTML
-            )
-        except TimeoutError:
-            return await cb.reply("You reached the time limit of 5 minutes.\nTry Again!")
+            from_chat_id = await cb.message.chat.ask("Send me your from Channel ID with -100",
+                                                     parse_mode=enums.ParseMode.HTML)
+        
+        except Exception as e:
+            logger.exception(e) 
+            return await cb.message.reply_text(f"Error\n {e}")
         if channel_id.text:
             channel_id = int(channel_id.text)
             try:
@@ -46,7 +43,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         if chat.id:
             try:
                 caption = await cb.message.chat.ask(
-                    text="Send me your Channel Caption",
+                    text="Send me your Target Channel",
                     timeout=300,
                     parse_mode=enums.ParseMode.HTML
                 )
