@@ -17,6 +17,7 @@ db = Database()
 
 @Client.on_message(filters.channel & media_filter)
 async def editing(bot, message):
+
     try:
         media = message.document or message.video or message.audio
         caption_text = "@HQFilms4u"
@@ -39,18 +40,13 @@ async def editing(bot, message):
         file_caption = remove_content(text)
         
         try:
-            if caption_position == "top":
-                caption = f"{file_caption}\n{caption_text}"
-                caption = '\n'.join(line for line in caption.split('\n') if line.strip())
-                forwarding = db.get_forwarding()
-                for from_chat_id, to_chat_id in forwarding:
-                    await bot.copy_message(
-                        chat_id=to_chat_id,
-                        from_chat_id=from_chat_id,
-                        message_id=message.message_id,
-                        caption=caption,
-                        parse_mode=enums.ParseMode.MARKDOWN
-                    )
+            await bot.copy_message(
+                chat_id=to_chat_id,
+                from_chat_id=from_chat_id,
+                message_id=message.message_id,
+                caption=caption,
+                parse_mode=enums.ParseMode.MARKDOWN
+            )
         except:
             pass
 
