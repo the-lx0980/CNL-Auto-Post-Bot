@@ -2,26 +2,20 @@
 # Year : 2023
 
 import re
-from .callback import CAPTION_DATA
 import logging
-from AutoPost.helper_func import series_block
+from AutoPost.helper_func import series_block, remove_content
 from AutoPost.database import Database
 from pyrogram import Client, filters, enums
 
 logger = logging.getLogger(__name__)
-caption_position = "top".lower()
-
-media_filter = filters.document | filters.video
-
 db = Database()
 
-@Client.on_message(filters.channel & media_filter)
+@Client.on_message(filters.channel & (filters.document | filters.video))
 async def editing(bot, message):
     from_chat_id = str(message.chat.id)
     forwarding = db.get_forwarding(from_chat_id)
     if forwarding:
         from_chat_id, to_chat_id = forwarding
-
         if message.document or message.video or message.audio:
             if message.caption:
                 file_caption = f"**{message.caption}**"
@@ -47,10 +41,3 @@ async def editing(bot, message):
 
 
 
-
-def remove_content(text):
-    # Remove username and link
-    text = text.replace("@MaxPlayHD", "").replace("👉", "")
-    # Remove additional text
-    text = text.replace("Join Us On Telegram", "").replace("Support us", "").replace("🙏", "").replace("❤️", "")
-    return text
