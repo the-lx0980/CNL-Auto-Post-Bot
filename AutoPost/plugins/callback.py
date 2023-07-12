@@ -28,28 +28,41 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     if query_data == 'set_caption':
         try:
             from_chat_id = await cb.message.chat.ask("Send me your from Channel ID with -100",
-                                                     parse_mode=enums.ParseMode.HTML)
-        
+                                                     parse_mode=enums.ParseMode.HTML)       
         except Exception as e:
             logger.exception(e) 
             return await cb.message.reply_text(f"Error\n {e}")
-        if channel_id.text:
-            channel_id = int(channel_id.text)
+        from_chat_id = from_chat_id.text
+        try:
+            if not target_chat[0:4].startswith("-100"):
+                if len(target_chat) < 14:
+                    return await update.reply_text("Invalid Chat Id...\nChat ID Should Be Something Like This: <code>-100xxxxxxxxxx</code>")
+        except Exception:
+            return await update.reply_text("Invalid Input...\nYou Should Specify Valid <code>chat_id(-100xxxxxxxxxx)</code>>")
+        
+        from_chat_id = str(from_chat_id)   
+        to_chat_id = await cb.message.chat.ask("Send Me Your Target Channel ID With '-100'",         
+                                                       parse_mode=enums.ParseMode.HTML)
+        to_chat_id = str(to_chat_id.text)
+        if to_chat_id:
             try:
-                chat = await client.get_chat(channel_id)
-            except Exception as e:
-                print(e)
-                return await cb.reply(f"Invalid Channel Id\n\n{e}")    
-        if chat.id:
-            try:
-                caption = await cb.message.chat.ask(
-                    text="Send me your Target Channel",
-                    timeout=300,
-                    parse_mode=enums.ParseMode.HTML
-                )
-            except TimeoutError:
-                return await cb.reply("You reached the time limit of 5 minutes.\nTry Again!")
-        if caption.text:
+                if not to_chat_id[0:4].startswith("-100"):
+                    if len(to_chat_id) < 14:
+                        return await update.reply_text("Invalid Chat Id...\nChat ID Should Be Something Like This: <code>-100xxxxxxxxxx</code>")
+            except Exception:
+                return await update.reply_text("Invalid Input...\nYou Should Specify Valid <code>chat_id(-100xxxxxxxxxx)</code>>")
+        added = db.add_forwarding(user_id, from_chat_id, to_chat_id)
+        if added:
+            await cb.message.reply(f"Forwarding set from `{from_chat_id}` to `{to_chat_id}`.")
+        else:
+            await cb.message.reply("You have already set forwarding for your channel IDs.")
+
+        
+        
+        
+        
+        
+    if caption.text:
             channel_id = chat.id
             CAPTION_DATA[channel_id] = caption.text
             await cb.answer("Caption set successfully.")
