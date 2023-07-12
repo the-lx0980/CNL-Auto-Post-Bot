@@ -17,38 +17,31 @@ db = Database()
 
 @Client.on_message(filters.channel & media_filter)
 async def editing(bot, message):
+    from_chat_id = str(message.chat.id)
+    forwarding = await db.get_from_chat(from_chat_id)
+    if forwarding:
+        from_chat_id, to_chat_id = forwarding
 
-    try:
-        media = message.document or message.video or message.audio
-        caption_text = "@HQFilms4u"
-    except:
-        caption_text = ""
-        pass
-
-    if message.document or message.video or message.audio:
-        if message.caption:
-            file_caption = f"**{message.caption}**"
+        if message.document or message.video or message.audio:
+            if message.caption:
+                file_caption = f"**{message.caption}**"
         else:
-            fname = media.file_name
-            filename = fname.replace("_", ".")
-            file_caption = f"`{filename}`"
-
-        if any(block in file_caption for block in series_block):
             return
+            
+            if any(block in file_caption for block in series_block):
+                return
 
-        text = file_caption
-        file_caption = remove_content(text)
+            text = file_caption
+            file_caption = remove_content(text)
         
-        try:
             await bot.copy_message(
-                chat_id=to_chat_id,
-                from_chat_id=from_chat_id,
-                message_id=message.message_id,
-                caption=caption,
-                parse_mode=enums.ParseMode.MARKDOWN
-            )
-        except:
-            pass
+                    chat_id=to_chat_id,
+                    from_chat_id=from_chat_id,
+                    message_id=message.message_id,
+                    caption=caption,
+                    parse_mode=enums.ParseMode.MARKDOWN
+                )
+
 
 def remove_content(text):
     # Remove username and link
