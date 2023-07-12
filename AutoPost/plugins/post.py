@@ -32,8 +32,8 @@ async def editing(bot, message):
 
             if caption:
                 await bot.copy_message(
-                    chat_id=to_chat_id,
-                    from_chat_id=from_chat_id,
+                    chat_id=int(to_chat_id),
+                    from_chat_id=int(from_chat_id),
                     message_id=message.message_id,
                     caption=caption,
                     parse_mode=enums.ParseMode.MARKDOWN
