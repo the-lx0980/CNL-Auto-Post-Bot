@@ -22,35 +22,42 @@ async def start(bot, message):
 
 @Client.on_callback_query()
 async def callback_handler(client: Bot, cb: CallbackQuery):
-    query_data = cb.data   
-    user_id = str(cb.message.chat.id) 
+    query_data = cb.data
+    user_id = str(cb.message.chat.id)
     if query_data == 'set_forward':
         try:
-            from_chat_txt = await cb.message.chat.ask("Send me your from Channel ID with -100",
-                                                     parse_mode=enums.ParseMode.HTML)       
+            from_chat_txt = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:",
+                                                      parse_mode=enums.ParseMode.HTML)
         except Exception as e:
-            logger.exception(e) 
-            return await cb.message.reply_text(f"Error\n {e}")
+            logger.exception(e)
+            return await cb.message.reply_text(f"Error:\n{str(e)}")
+
         from_chat_id = from_chat_txt.text
+
         try:
-            if not target_chat[0:4].startswith("-100"):
-                if len(target_chat) < 14:
-                    return await cb.message.reply_text("Invalid Chat Id...\nChat ID Should Be Something Like This: <code>-100xxxxxxxxxx</code>")
+            if not from_chat_id.startswith("-100"):
+                if len(from_chat_id) < 14:
+                    return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
         except Exception:
-            return await cb.message.reply_text("Invalid Input...\nYou Should Specify Valid <code>chat_id(-100xxxxxxxxxx)</code>>")
-        from_chat_id = str(from_chat_id)   
-        to_chat_id = await cb.message.chat.ask("Send Me Your Target Channel ID With '-100'",         
+            return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
+
+        from_chat_id = str(from_chat_id)
+
+        to_chat_id = await cb.message.chat.ask("Send me your 'to' Channel ID starting with -100:",
                                                parse_mode=enums.ParseMode.HTML)
         to_chat_id = str(to_chat_id.text)
+
         if to_chat_id:
             try:
-                if not to_chat_id[0:4].startswith("-100"):
+                if not to_chat_id.startswith("-100"):
                     if len(to_chat_id) < 14:
-                        return await cb.message.reply_text("Invalid Chat Id...\nChat ID Should Be Something Like This: <code>-100xxxxxxxxxx</code>")
+                        return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
             except Exception:
-                return await cb.message.reply_text("Invalid Input...\nYou Should Specify Valid <code>chat_id(-100xxxxxxxxxx)</code>>")
+                return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
+
         added = db.add_forwarding(user_id, from_chat_id, to_chat_id)
         if added:
             await cb.message.reply_text(f"Forwarding set from `{from_chat_id}` to `{to_chat_id}`.")
         else:
             await cb.message.reply_text("You have already set forwarding for your channel IDs.")
+
