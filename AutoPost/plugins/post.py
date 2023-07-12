@@ -16,7 +16,6 @@ media_filter = filters.document | filters.video
 
 @Client.on_message(filters.channel & media_filter)
 async def editing(bot, message):
-    """
     try:
         media = message.document or message.video or message.audio
         caption_text = "@HQFilms4u"
@@ -43,34 +42,14 @@ async def editing(bot, message):
                 caption = f"{file_caption}\n{caption_text}"
                 caption = '\n'.join(line for line in caption.split('\n') if line.strip())
                 await bot.copy_message(
-                    chat_id=-1001986761426,
-                    from_chat_id=-1001921917995,
+                    chat_id=to_chat, 
+                    from_chat_id=from_chat, 
                     message_id=message.id,
                     caption=caption,
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
         except:
             pass
-    """
-    channel_id = message.chat.id
-    autocaption = CAPTION_DATA.get(channel_id)
-    await message.reply_text(f"Here is Your Caption\n\n{autocaption}")
-    if autocaption:
-        if message.caption:
-            try:
-                await bot.edit_message_caption(
-                    chat_id=message.chat.id,
-                    message_id=message.id,
-                    caption=f"**{message.caption}**" + "\n\n" + autocaption,
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
-            except:
-                pass
-            
-                
-            
-        
-
 
 def remove_content(text):
     # Remove username and link
