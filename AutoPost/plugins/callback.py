@@ -57,6 +57,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             else:
                 await cb.message.reply_text("You have already set forwarding for your channel IDs.")
     except Exception as e:
-        print("Error occurred in callback_handler:", str(e))
+        error_message = f"Error occurred in callback_handler: {str(e)}"
+        await cb.message.reply_text(error_message)
 
 
