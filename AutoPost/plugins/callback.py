@@ -3,6 +3,7 @@ from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+from AutoPost help_function import channels_pagination_callback
 
 logger = logging.getLogger(__name__)
 db = Database()
@@ -72,3 +73,6 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
             await client.send_message(chat_id=int(user_id), text=error_message)
+    
+    elif query_data.startswith("next_channels_") or query_data == "prev_channels":
+        await channels_pagination_callback(client, cb)
