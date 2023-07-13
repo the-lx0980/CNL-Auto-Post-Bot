@@ -61,10 +61,13 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             await cb.message.reply_text(error_message)
 
     elif query_data.startswith("managecl"):
-        from_chat_id = query_data.split("#")
-        await cb.message.delete()
-        await client.send_message(
-            chat_id=user_id,
-            text=f"Channel ID\n{from_chat_id}"
-        )
-        
+        try:
+            from_chat_id = query_data.split("#")[1]
+            await callback_query.message.delete()
+            await client.send_message(
+                chat_id=chat_id,
+                text=f"Channel ID: {from_chat_id}"
+            )
+        except Exception as e:
+            error_message = f"An error occurred: {str(e)}"
+            await client.send_message(chat_id=chat_id, text=error_message)
