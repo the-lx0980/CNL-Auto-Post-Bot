@@ -4,42 +4,38 @@ class Database:
     def __init__(self):
         self.client = MongoClient("mongodb+srv://filesautobot:filesautobot870@cluster0.qcxdkpw.mongodb.net/?retryWrites=true&w=majority")
         self.db = self.client["auto-post"]
-        self.collection = self.db["auto-post-collection"]
+        self.id_collection = self.db["channel-id"]
         self.block_collection = self.db["blocked-text"]
     
-    def save_chat_ids(self, user_id, from_chat_id, to_chat_id):
+    def save_chat_ids(self, user_id, channel_id):
         try:
-            existing_data = self.collection.find_one({'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id})
+            existing_data = self.id_collection.find_one({'user_id': user_id})
             if existing_data:
                 print("Chat IDs already exist in the database.")
             else:
-                data = {'user_id': user_id, 'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id}
-                self.collection.insert_one(data)
+                data = {'user_id': user_id, 'channel_id': channel_id}
+                self.id_collection.insert_one(data)
                 print("Chat IDs saved to the database.")
         except Exception as e:
             print("Error occurred while saving chat IDs to the database:", str(e))
 
-    def delete_chat_ids(self, from_chat_id, to_chat_id):
+    def delete_chat_ids(self, user_id, channel_id):
         try:
-            delete_result = self.collection.delete_one({'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id})
-            if delete_result.deleted_count > 0:
-                print("Chat IDs deleted from the database.")
-            else:
-                print("Chat IDs not found in the database.")
+            existing_data = self.id_collection.find_one({'user_id': user_id})
+            if existing_data:
+                delete_result = self.id_collection.delete_one({'user_id': user_id, 'channel_id': channel_id})
+                if delete_result.deleted_count > 0:
+                    print("Chat IDs deleted from the database.")
+                else:
+                    print("Chat IDs not found in the database.")
         except Exception as e:
             print("Error occurred while deleting chat IDs from the database:", str(e))
 
-    def get_chat_ids(self, from_chat_id):
+    def get_channel_id(self, channel_id):
         try:
-            channels = self.collection.find_one(
-                {
-                    'from_chat_id': from_chat_id
-                }
-            )
+            channels = self.collection.find_one({'channel_id': channel_id})           
             if channels:
-                from_chat_id = channels["from_chat_id"]
-                to_chat_id = channels["to_chat_id"]
-                return from_chat_id, to_chat_id
+                return channels["channel_id"]
             return None
         except Exception as e:
             print("Error occurred while retrieving chat IDs from the database:", str(e))
@@ -52,21 +48,26 @@ class Database:
             print("Error occurred while retrieving channels for user from the database:", str(e))
             return []
 
-    def add_block_text(self, user_id, from_chat_id, text):
+    def add_block_text(self, user_id, channel_id, text):
         try:
-            existing_data = self.block_collection.find_one({'user_id': user_id})
+            existing_data = self.block_collection.find_one({'user_id': user_id, 'channel_id': channel_id})
             if existing_data:
-                self.block_collection.update_one({'user_id': user_id, 'from_chat_id': from_chat_id}, {'$push': {'texts': text}})
+                existing_texts = existing_data.get('texts', [])
+                if text in existing_texts:
+                    print("Text already exists in the database.")
+                else:
+                    self.block_collection.update_one({'user_id': user_id, 'channel_id': channel_id}, {'$push': {'texts': text}})
+                    print("Block text added to the database.")
             else:
-                data = {'user_id': user_id, 'from_chat_id': from_chat_id, 'texts': [text]}
+                data = {'user_id': user_id, 'channel_id': channel_id, 'texts': [text]}
                 self.block_collection.insert_one(data)
-            print("Block text added to the database.")
+                print("Block text added to the database.")
         except Exception as e:
             print("Error occurred while adding block text to the database:", str(e))
 
-    def get_texts(self, from_chat_id):
+    def get_block_texts(self, channel_id):
         try:
-            data = self.block_collection.find_one({'from_chat_id': from_chat_id})
+            data = self.block_collection.find_one({'channel_id': channel_id})
             if data:
                 return data['texts']
             return []
@@ -74,20 +75,20 @@ class Database:
             print("Error occurred while retrieving block texts from the database:", str(e))
             return []
 
-    def delete_text(self, user_id, from_chat_id, text):
+    def delete_block_text(self, channel_id, text):
         try:
-            data = self.block_collection.find_one({'user_id': user_id})
+            data = self.block_collection.find_one({'channel_id': channel_id})
             if data:  
-                self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$pull': {'texts': text}})
+                self.block_collection.update_one({'channel_id': channel_id}, {'$pull': {'texts': text}})
                 print("Block text deleted from the database.")
         except Exception as e:
             print("Error occurred while deleting block text from the database:", str(e))
 
-    def delete_all_texts(self, user_id, from_chat_id):
+    def delete_all_block_texts(self, user_id, channel_id):
         try:
             data = self.block_collection.find_one({'user_id': user_id})
             if data:    
-                self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$set': {'texts': []}})
+                self.block_collection.update_one({'channel_id': channel_id}, {'$set': {'texts': []}})
                 print("All block texts deleted from the database.")
         except Exception as e:
             print("Error occurred while deleting all block texts from the database:", str(e))
