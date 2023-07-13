@@ -5,7 +5,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 db = Database()
 
 @Client.on_callback_query(filters.regex('mychannel'))  
-def callback_handler(client, callback_query):
+async def callback_handler(client, callback_query):
     chat_id = callback_query.message.chat.id
     from_chat_id = callback_query.data
     block_texts = db.get_texts(from_chat_id)
@@ -22,7 +22,7 @@ def callback_handler(client, callback_query):
 
 
 @Client.on_message(filters.command('my_channel'))
-def my_channel_command(client, message):
+async def my_channel_command(client, message):
     user_id = str(message.from_user.id)
     channels = db.get_channels_for_user(user_id)
     if channels:
