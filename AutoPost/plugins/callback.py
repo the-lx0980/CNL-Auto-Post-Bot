@@ -49,7 +49,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                     return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
 
             await client.send_message(chat_id=cb.message.chat.id, text=f"User ID: {user_id}\nSource ID: {from_chat_id}\nTarget ID: {to_chat_id}")
-            await db.save_chat_ids(from_chat_id, to_chat_id)
+            await db.save_chat_ids(user_id, from_chat_id, to_chat_id)
             get_data = db.get_chat_ids(from_chat_id)
             if get_data:
                 from_chat_id, to_chat_id = get_data
