@@ -62,10 +62,10 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         await cb.message.edit_text(
             text=f"{chat.title}\nNow Manage Your Channel")
             reply_markup=InlineKeyboardMarkup( [[
-                InlineKeyboardButton("Auto Caption", callback_data=f"auto_caption#{chat_info}"),
-                InlineKeyboardButton("Auto Forward", callback_data=f"auto_forward#{channel_id}")
-                ],[
-                InlineKeyboardButton("Auto Forward", callback_data='back_managecl') 
+                InlineKeyboardButton("Auto Caption", callback_data=f"auto_caption#{chat_info}") #,
+               # InlineKeyboardButton("Auto Forward", callback_data=f"auto_forward#{channel_id}")
+               # ],[
+               # InlineKeyboardButton("Auto Forward", callback_data='back_managecl') 
                 ]]
                 )
         )
@@ -74,29 +74,32 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         await cb.message.edit_text([[
             text=f"{chat_info[0]}\nNow Set Caption For Your Channel")
             reply_markup=InlineKeyboardMarkup([[
-                InlineKeyboardButton("Set Caption", callback_data=f"set_caption#{chat_info}"),
-                InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{chat_info}")
-                ],[
-                InlineKeyboardButton("Caption Position", callback_data=f"cap_osition#{chat_info}") 
-                ],[
-                InlineKeyboardButton("Close", callback_data="close"),
-                InlineKeyboardButton("Back", callback_data=f"managecl#{chat_info}")         
-                ]])  
+                InlineKeyboardButton("Set Caption", callback_data=f"set_caption#{chat_info}") #,
+               # InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{chat_info}")
+               # ],[
+               # InlineKeyboardButton("Caption Position", callback_data=f"cap_osition#{chat_info}") 
+               # ],[
+               # InlineKeyboardButton("Close", callback_data="close"),
+               # InlineKeyboardButton("Back", callback_data=f"managecl#{chat_info}")         
+                ]]
+                )
+        )
 
     elif query_data.startswith("set_caption"):
         chat_info = query_data.split("#")[1]      
-        await
-        await cb.message.edit_text([[
+        await cb.message.edit_text(
             text=f"{chat_info[0]}\nNow Set Caption For Your Channel")
             reply_markup=InlineKeyboardMarkup([[
-                InlineKeyboardButton("Set Caption", callback_data=f"auto_caption#{chat_info}"),
-                InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{chat_info}")
-                ],[
-                InlineKeyboardButton("Caption Position", callback_data=f"cap_osition#{chat_info}") 
-                ],[
-                InlineKeyboardButton("Close", callback_data="close"),
-                InlineKeyboardButton("Back", callback_data=f"managecl#{chat_info}")         
-                ]])
+                InlineKeyboardButton("Set Caption", callback_data=f"auto_caption#{chat_info}") #,
+               # InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{chat_info}")
+               # ],[
+               # InlineKeyboardButton("Caption Position", callback_data=f"cap_osition#{chat_info}") 
+               # ],[
+               # InlineKeyboardButton("Close", callback_data="close"),
+               # InlineKeyboardButton("Back", callback_data=f"managecl#{chat_info}")         
+                ]]
+                )
+        )
 
                                              
 
