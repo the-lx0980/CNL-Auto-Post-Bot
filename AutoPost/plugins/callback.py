@@ -3,7 +3,7 @@ from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from AutoPost help_function import channels_pagination_callback
+from AutoPost.helper_func import channels_pagination_callback
 
 logger = logging.getLogger(__name__)
 db = Database()
