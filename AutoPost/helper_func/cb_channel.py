@@ -1,4 +1,6 @@
 from AutoPost.database import Database
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 db = Database()
 
 async def channels_pagination_callback(client, callback_query):
@@ -32,4 +34,4 @@ async def channels_pagination_callback(client, callback_query):
             await client.send_message(chat_id=callback_query.message.chat.id, text=reply_text)
     except Exception as e:
         error_message = f"An error occurred: {str(e)}"
-        await client.send_message(chat_id=callback_query.message.chat.id, text=error_message
+        await client.send_message(chat_id=callback_query.message.chat.id, text=error_message)
