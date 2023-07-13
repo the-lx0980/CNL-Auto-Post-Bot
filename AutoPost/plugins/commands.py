@@ -59,14 +59,22 @@ async def add_block_text_command(client, message):
 
 @Client.on_message(filters.private & filters.command('check_blocked_text'))
 async def check_blocked_text_command(client, message):
-    from_chat_id = str(message.text.split(' ', 1)[1])
-    blocked_texts = db.get_texts(from_chat_id)
+    try:
+        if len(message.text.split()) > 1:
+            from_chat_id = str(message.text.split(' ', 1)[1])
+            blocked_texts = db.get_texts(from_chat_id)
 
-    if blocked_texts:
-        reply_text = f"Blocked texts for channel ID {from_chat_id}:\n\n"
-        for text in blocked_texts:
-            reply_text += f"- {text}\n"
+            if blocked_texts:
+                reply_text = f"Blocked texts for channel ID <code>{from_chat_id}</code>:\n\n"
+                for index, text in enumerate(blocked_texts, start=1):
+                    reply_text += f"{index}. {text}\n"
 
-        await message.reply_text(reply_text)
-    else:
-        await message.reply_text(f"No blocked texts found for channel ID {from_chat_id}.")
+                await message.reply_text(reply_text, parse_mode="HTML")
+            else:
+                await message.reply_text(f"No blocked texts found for channel ID <code>{from_chat_id}</code>.", parse_mode="HTML")
+        else:
+            command_format = "/check_blocked_text <code>{channel_id}</code>"
+            reply_text = f"Please provide a channel ID as an argument.\n\nCommand format: {command_format}"
+            await message.reply_text(reply_text, parse_mode="HTML")
+    except Exception as e:
+        await message.reply_text(f"An error occurred: <code>{str(e)}</code>", parse_mode="HTML")
