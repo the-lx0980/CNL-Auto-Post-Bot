@@ -54,17 +54,18 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
 
         
     elif query_data.startswith("managecl"):
-        try:
-            from_chat_id = query_data.split("#")[1]
-            await cb.message.delete()
-            await client.send_message(
-                chat_id=int(user_id),
-                text=f"Channel ID: {from_chat_id}"
-            )
-        except Exception as e:
-            error_message = f"An error occurred: {str(e)}"
-            await client.send_message(chat_id=int(user_id), text=error_message)
-    
+        from_chat_id = query_data.split("#")[1]
+        await query.message.edit_text(
+            text=f"{chat name}Now Manage Your Channel")
+            reply_markup=InlineKeyboardMarkup( [[
+                InlineKeyboardButton("Auto Caption", callback_data='auto_caption'),
+                InlineKeyboardButton("Auto Forward", callback_data='auto_forward')
+                ],[
+                InlineKeyboardButton("Auto Forward", callback_data='back_managecl') 
+                ]]
+                )
+        )
+
     elif query_data == "Close":
         await cb.message.delete() 
     
