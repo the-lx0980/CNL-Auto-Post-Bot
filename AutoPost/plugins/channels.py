@@ -9,16 +9,16 @@ def callback_handler(client, callback_query):
     chat_id = callback_query.message.chat.id
     from_chat_id = callback_query.data
     block_texts = db.get_texts(from_chat_id)
-
+ 
     if block_texts:
         reply_text = "Block texts:\n\n"
         for text in block_texts:
             reply_text += f"- {text}\n"
 
-        client.send_message(chat_id=chat_id, text=reply_text)
+        await client.send_message(chat_id=chat_id, text=reply_text)
     else:
         reply_text = "No block texts found for this channel."
-        client.send_message(chat_id=chat_id, text=reply_text)
+        await client.send_message(chat_id=chat_id, text=reply_text)
 
 
 @Client.on_message(filters.command('my_channel'))
@@ -34,7 +34,7 @@ def my_channel_command(client, message):
 
         reply_markup = InlineKeyboardMarkup(buttons)
         reply_text = "Your channels:"
-        client.send_message(chat_id=message.chat.id, text=reply_text, reply_markup=reply_markup)
+        await client.send_message(chat_id=message.chat.id, text=reply_text, reply_markup=reply_markup)
     else:
         reply_text = "You have no channels."
-        client.send_message(chat_id=message.chat.id, text=reply_text)
+        await client.send_message(chat_id=message.chat.id, text=reply_text)
