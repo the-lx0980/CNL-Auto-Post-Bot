@@ -54,18 +54,41 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
 
         
     elif query_data.startswith("managecl"):
-        from_chat_id = query_data.split("#")[1]
-        await query.message.edit_text(
-            text=f"{chat name}Now Manage Your Channel")
+        channel_id = query_data.split("#")[1]  
+        chat = await client.get_chat(int(channel_id))
+        channel_id = str(chat.id)
+        await cb.message.edit_text(
+            text=f"{chat.title}\nNow Manage Your Channel")
             reply_markup=InlineKeyboardMarkup( [[
-                InlineKeyboardButton("Auto Caption", callback_data='auto_caption'),
-                InlineKeyboardButton("Auto Forward", callback_data='auto_forward')
+                InlineKeyboardButton("Auto Caption", callback_data=f"auto_caption#{channel_id}"),
+                InlineKeyboardButton("Auto Forward", callback_data=f"auto_forward#{channel_id}")
                 ],[
                 InlineKeyboardButton("Auto Forward", callback_data='back_managecl') 
                 ]]
                 )
         )
+    elif query_data.startswith("auto_caption"):
+        channel_id = query_data.split("#")[1]  
+        chat = await client.get_chat(int(channel_id))
+        channel_id = str(chat.id)
+        await cb.message.edit_text(
+            text=f"{chat.title}\nNow Set Caption For Your Channel")
+            reply_markup=InlineKeyboardMarkup( [[
+                InlineKeyboardButton("Set Caption", callback_data=f"auto_caption#{channel_id}"),
+                InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{channel_id}")
+                ],[
+                InlineKeyboardButton("Caption Position", callback_data="cap_osition") 
+                ],[
+                InlineKeyboardButton("Close", callback_data="close"),
+                InlineKeyboardButton("Back", callback_data=f"managecl#{channel_id}") 
+                ]]
+                )                         
 
-    elif query_data == "Close":
+                                             
+
+                
+
+
+    elif query_data == "close":
         await cb.message.delete() 
     
