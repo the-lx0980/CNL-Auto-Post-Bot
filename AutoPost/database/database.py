@@ -7,13 +7,13 @@ class Database:
         self.collection = self.db["auto-post-collection"]
         self.block_collection = self.db["blocked-text"]
     
-    def save_chat_ids(self, from_chat_id, to_chat_id):
+    def save_chat_ids(self, user_id, from_chat_id, to_chat_id):
         try:
             existing_data = self.collection.find_one({'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id})
             if existing_data:
                 print("Chat IDs already exist in the database.")
             else:
-                data = {'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id}
+                data = {'user_id': user_id, 'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id}
                 self.collection.insert_one(data)
                 print("Chat IDs saved to the database.")
         except Exception as e:
@@ -44,8 +44,16 @@ class Database:
         except Exception as e:
             print("Error occurred while retrieving chat IDs from the database:", str(e))
 
+    def get_channels_for_user(self, user_id):
+        try:
+            channels = self.collection.find({'from_chat_id': user_id})
+            return list(channels)
+        except Exception as e:
+            print("Error occurred while retrieving channels for user from the database:", str(e))
+            return []
 
-    # for  Blocking text messages 
+
+    # for Blocking text messages
     def add_block_text(self, from_chat_id, text):
         existing_data = self.block_collection.find_one({'from_chat_id': from_chat_id})
         if existing_data:
