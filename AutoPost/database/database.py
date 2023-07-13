@@ -53,33 +53,50 @@ class Database:
             return []
 
     def add_block_text(self, user_id, from_chat_id, text):
-        existing_data = self.block_collection.find_one({'user_id': user_id})
-        if existing_data:
-            self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$push': {'texts': text}})
-        else:
-            data = {'user_id': user_id, 'from_chat_id': from_chat_id, 'texts': [text]}
-            self.block_collection.insert_one(data)
+        try:
+            existing_data = self.block_collection.find_one({'user_id': user_id})
+            if existing_data:
+                self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$push': {'texts': text}})
+            else:
+                data = {'user_id': user_id, 'from_chat_id': from_chat_id, 'texts': [text]}
+                self.block_collection.insert_one(data)
+            print("Block text added to the database.")
+        except Exception as e:
+            print("Error occurred while adding block text to the database:", str(e))
 
     def get_texts(self, from_chat_id):
-        data = self.block_collection.find_one({'from_chat_id': from_chat_id})
-        if data:
-            return data['texts']
-        return []
+        try:
+            data = self.block_collection.find_one({'from_chat_id': from_chat_id})
+            if data:
+                return data['texts']
+            return []
+        except Exception as e:
+            print("Error occurred while retrieving block texts from the database:", str(e))
+            return []
 
     def delete_text(self, user_id, from_chat_id, text):
-        data = self.block_collection.find_one({'user_id': user_id})
-        if data:  
-            self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$pull': {'texts': text}})
+        try:
+            data = self.block_collection.find_one({'user_id': user_id})
+            if data:  
+                self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$pull': {'texts': text}})
+                print("Block text deleted from the database.")
+        except Exception as e:
+            print("Error occurred while deleting block text from the database:", str(e))
 
     def delete_all_texts(self, user_id, from_chat_id):
-        data = self.block_collection.find_one({'user_id': user_id})
-        if data:    
-            self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$set': {'texts': []}})
+        try:
+            data = self.block_collection.find_one({'user_id': user_id})
+            if data:    
+                self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$set': {'texts': []}})
+                print("All block texts deleted from the database.")
+        except Exception as e:
+            print("Error occurred while deleting all block texts from the database:", str(e))
 
     def clear_database(self):
         try:
             self.collection.delete_many({})
             self.block_collection.delete_many({})
+            print("Database cleared successfully.")
         except Exception as e:
             print("Error occurred while clearing the database:", str(e))     
 
@@ -88,11 +105,13 @@ class Database:
             existing = self.collection.find({'user_id': user_id})
             if existing:
                 self.collection.delete_one({'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id})
+                print("Connection deleted from the database.")
         except Exception as e:
             print("Error occurred while deleting the connection:", str(e))
         try:
             existing = self.collection.find({'user_id': user_id})
             if existing:
                 self.block_collection.delete_one({'from_chat_id': from_chat_id})
+                print("Block texts for the connection deleted from the database.")
         except Exception as e:
             print("Error occurred while deleting block texts for the connection:", str(e))
