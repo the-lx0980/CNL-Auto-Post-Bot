@@ -39,6 +39,21 @@ class Database:
             return None
         except Exception as e:
             print("Error occurred while retrieving chat IDs from the database:", str(e))
+###################################################################################----------------------------->
+            # For  Auto Caption 
+     
+    def set_auto_cap(self, user_id, channel_id):
+        try:
+            existing_data = self.id_collection.find_one({'user_id': user_id})
+            if existing_data:
+                print("Chat IDs already exist in the database.")
+            else:
+                data = {'user_id': user_id, 'channel_id': channel_id}
+                self.id_collection.insert_one(data)
+                print("Chat IDs saved to the database.")
+        except Exception as e:
+            print("Error occurred while saving chat IDs to the database:", str(e))
+###################################################################################----------------------------->
 
     def get_channels_for_user(self, user_id):
         try:
