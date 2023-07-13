@@ -93,26 +93,3 @@ class Database:
         except Exception as e:
             print("Error occurred while deleting all block texts from the database:", str(e))
 
-    def clear_database(self):
-        try:
-            self.collection.delete_many({})
-            self.block_collection.delete_many({})
-            print("Database cleared successfully.")
-        except Exception as e:
-            print("Error occurred while clearing the database:", str(e))     
-
-    def delete_connection(self, user_id, from_chat_id, to_chat_id):
-        try:
-            existing = self.collection.find({'user_id': user_id})
-            if existing:
-                self.collection.delete_one({'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id})
-                print("Connection deleted from the database.")
-        except Exception as e:
-            print("Error occurred while deleting the connection:", str(e))
-        try:
-            existing = self.collection.find({'user_id': user_id})
-            if existing:
-                self.block_collection.delete_one({'from_chat_id': from_chat_id})
-                print("Block texts for the connection deleted from the database.")
-        except Exception as e:
-            print("Error occurred while deleting block texts for the connection:", str(e))
