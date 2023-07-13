@@ -1,5 +1,6 @@
 from pyrogram import Client, filters
 from AutoPost.database import Database 
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 db = Database()
 
@@ -33,20 +34,22 @@ def delete_connection_command(client, message):
         reply_text = 'Invalid command format. Please use /delete_connection {from_chat_id} {to_chat_id}'
         message.reply_text(reply_text)
 
-@Client.on_message(filters.command('forward_list'))
+@app.on_message(filters.command('my_channel'))
 def my_channel_command(client, message):
-    user_id = str(message.chat.id)
+    user_id = str(message.from_user.id)
     channels = db.get_channels_for_user(user_id)
     if channels:
-        reply_text = ""
-        for idx, channel in enumerate(channels, 1):
+        buttons = []
+        for channel in channels:
             from_chat_id = channel['from_chat_id']
-            to_chat_id = channel['to_chat_id']
-            reply_text += f"{idx}. From: {from_chat_id}\n   Target: {to_chat_id}\n\n"
+            button = InlineKeyboardButton(str(from_chat_id), callback_data=from_chat_id)
+            buttons.append([button])
 
-        message.reply_text(reply_text)
+        reply_markup = InlineKeyboardMarkup(buttons)
+        reply_text = "Your channels:"
+        message.reply_text(reply_text, reply_markup=reply_markup)
     else:
-        reply_text = "No channels found for the user."
+        reply_text = "You have no channels."
         message.reply_text(reply_text)
 
 
