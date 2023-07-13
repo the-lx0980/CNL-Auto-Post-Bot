@@ -1,3 +1,4 @@
+HERtU = """
 from pyrogram import Client, filters, enums
 from AutoPost.database import Database 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -78,3 +79,4 @@ async def check_blocked_text_command(client, message):
             await message.reply_text(reply_text, parse_mode="HTML")
     except Exception as e:
         await message.reply_text(f"An error occurred: <code>{str(e)}</code>", parse_mode=enums.ParseMode.HTML)
+"""
