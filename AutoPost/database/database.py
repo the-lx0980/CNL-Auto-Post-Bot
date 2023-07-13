@@ -42,17 +42,38 @@ class Database:
 ###################################################################################----------------------------->
             # For  Auto Caption 
      
-    def set_auto_cap(self, user_id, channel_id):
+    def set_auto_cap(self, channel_id, auto_caption):
         try:
-            existing_data = self.id_collection.find_one({'user_id': user_id})
+            existing_data = self.auto_cap_col.find_one({'channel_id': channel_id})
             if existing_data:
                 print("Chat IDs already exist in the database.")
             else:
-                data = {'user_id': user_id, 'channel_id': channel_id}
-                self.id_collection.insert_one(data)
+                data = {'channel_id': channel_id, 'auto_caption': auto_caption}
+                self.auto_cap_col.insert_one(data)
                 print("Chat IDs saved to the database.")
         except Exception as e:
             print("Error occurred while saving chat IDs to the database:", str(e))
+
+    def del_auto_cap(self, channel_id):
+        try:
+            existing_data = self.id_collection.find_one({'channel_id': channel_id})
+            if existing_data:
+                delete_result = self.id_collection.delete_one({'channel_id': channel_id, 'auto_caption': auto_caption})
+                if delete_result.deleted_count > 0:
+                    print("Chat IDs deleted from the database.")
+                else:
+                    print("Chat IDs not found in the database.")
+        except Exception as e:
+            print("Error occurred while deleting chat IDs from the database:", str(e))
+
+    def get_auto_cap(self, channel_id):
+        try:
+            channels = self.collection.find_one({'channel_id': channel_id})           
+            if channels:
+                return channels["auto_caption"]
+            return None
+        except Exception as e:
+            print("Error occurred while retrieving chat IDs from the database:", str(e))
 ###################################################################################----------------------------->
 
     def get_channels_for_user(self, user_id):
