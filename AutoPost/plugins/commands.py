@@ -56,3 +56,17 @@ async def add_block_text_command(client, message):
     else:
         reply_text = 'Invalid command format. Please use /add_block_text {from_chat_id} {text}'
         await message.reply_text(reply_text)
+
+@Client.on_message(filters.private & filters.command('check_blocked_text'))
+async def check_blocked_text_command(client, message):
+    from_chat_id = str(message.text.split(' ', 1)[1])
+    blocked_texts = db.get_texts(from_chat_id)
+
+    if blocked_texts:
+        reply_text = f"Blocked texts for channel ID {from_chat_id}:\n\n"
+        for text in blocked_texts:
+            reply_text += f"- {text}\n"
+
+        await message.reply_text(reply_text)
+    else:
+        await message.reply_text(f"No blocked texts found for channel ID {from_chat_id}.")
