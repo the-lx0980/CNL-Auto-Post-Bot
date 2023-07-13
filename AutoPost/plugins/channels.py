@@ -9,6 +9,7 @@ async def callback_handler(client, callback_query):
     try:
         chat_id = callback_query.message.chat.id
         from_chat_id = callback_query.data
+        await client.send_message(chat_id=chat_id, text=f"From Chat ID: {from_chat_id}") 
         block_texts = db.get_texts(from_chat_id)
 
         if block_texts:
