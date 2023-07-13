@@ -35,7 +35,7 @@ async def my_channel_command(client, message):
             buttons = []
             for channel in channels:
                 from_chat_id = channel['from_chat_id']
-                button = InlineKeyboardButton(str(from_chat_id), callback_data='mychannel_' + from_chat_id)
+                button = InlineKeyboardButton(str(from_chat_id), callback_data=f"managecl#{from_chat_id}")
                 buttons.append([button])
 
             reply_markup = InlineKeyboardMarkup(buttons)
