@@ -73,3 +73,24 @@ class Database:
 
     def delete_all_texts(self, from_chat_id):
         self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$set': {'texts': []}})
+
+    def clear_database(self):
+        try:
+            self.collection.delete_many({})
+            self.block_collection.delete_many({})
+        except Exception as e:
+            print("Error occurred while clearing the database:", str(e))     
+
+    def delete_connection(self, from_chat_id, to_chat_id):
+        try:
+            existing = self.collection.find({'user_id': user_id})
+            if existing:
+                self.collection.delete_one({'from_chat_id': from_chat_id, 'to_chat_id': to_chat_id})
+        except Exception as e:
+            print("Error occurred while deleting the connection:", str(e))
+        try:
+            existing = self.collection.find({'user_id': user_id})
+            if existing:
+                self.block_collection.delete_one({'from_chat_id': from_chat_id})
+        except Exception as e:
+            print("Error occurred while deleting block texts for the connection:", str(e))
