@@ -57,10 +57,12 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         channel_id = query_data.split("#")[1]  
         chat = await client.get_chat(int(channel_id))
         channel_id = str(chat.id)
+        chat_title = chat.title 
+        chat_info = [chat_title, channel_id]
         await cb.message.edit_text(
             text=f"{chat.title}\nNow Manage Your Channel")
             reply_markup=InlineKeyboardMarkup( [[
-                InlineKeyboardButton("Auto Caption", callback_data=f"auto_caption#{channel_id}"),
+                InlineKeyboardButton("Auto Caption", callback_data=f"auto_caption#{chat_info}"),
                 InlineKeyboardButton("Auto Forward", callback_data=f"auto_forward#{channel_id}")
                 ],[
                 InlineKeyboardButton("Auto Forward", callback_data='back_managecl') 
@@ -68,19 +70,17 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                 )
         )
     elif query_data.startswith("auto_caption"):
-        channel_id = query_data.split("#")[1]  
-        chat = await client.get_chat(int(channel_id))
-        channel_id = str(chat.id)
+        chat_info = query_data.split("#")[1]      
         await cb.message.edit_text(
-            text=f"{chat.title}\nNow Set Caption For Your Channel")
+            text=f"{chat_info[0]}\nNow Set Caption For Your Channel")
             reply_markup=InlineKeyboardMarkup( [[
-                InlineKeyboardButton("Set Caption", callback_data=f"auto_caption#{channel_id}"),
-                InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{channel_id}")
+                InlineKeyboardButton("Set Caption", callback_data=f"auto_caption#{chat_info}"),
+                InlineKeyboardButton("Replace Text", callback_data=f"auto_forward#{chat_info}")
                 ],[
-                InlineKeyboardButton("Caption Position", callback_data="cap_osition") 
+                InlineKeyboardButton("Caption Position", callback_data=f"cap_osition#{chat_info}") 
                 ],[
                 InlineKeyboardButton("Close", callback_data="close"),
-                InlineKeyboardButton("Back", callback_data=f"managecl#{channel_id}") 
+                InlineKeyboardButton("Back", callback_data=f"managecl#{chat_info}") 
                 ]]
                 )                         
 
