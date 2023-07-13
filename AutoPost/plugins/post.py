@@ -15,8 +15,7 @@ async def editing(bot, message):
     from_chat_id = str(message.chat.id)
     forwarding = db.get_chat_ids(get_chat_ids)
     if forwarding:
-        from_chat_id = forwarding["from_chat_id"]
-        to_chat_id = forwarding["to_chat_id"]
+        from_chat_id, to_chat_id = forwarding
         if message.document or message.video or message.audio:
             if message.caption:
                 file_caption = f"**{message.caption}**"
