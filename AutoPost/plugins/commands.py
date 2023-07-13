@@ -15,7 +15,7 @@ async def check_from_chat(client, message):
         await message.reply_text("You haven't set a forwarding connection.")
 
 @Client.on_message(filters.private & filters.command('delete_connection'))  
-def delete_connection_command(client, message):
+async def delete_connection_command(client, message):
     user_id = str(message.from_user.id)
     command_parts = message.text.split(' ', 3)
 
@@ -33,14 +33,14 @@ def delete_connection_command(client, message):
         await message.reply_text(reply_text)
 
 @Client.on_message(filters.command('clear_database') & filters.user(5326801541))
-def clear_database_command(client, message):
+async def clear_database_command(client, message):
     # Clear the entire database
     db.clear_database()
     reply_text = "Database cleared successfully."
     await message.reply_text(reply_text)
 
 @Client.on_message(filters.private & filters.command('add_block_text'))
-def add_block_text_command(client, message):
+async def add_block_text_command(client, message):
     user_id = str(message.from_user.id)
     command_parts = message.text.split(' ', 2)
 
