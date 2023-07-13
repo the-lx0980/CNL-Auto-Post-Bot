@@ -3,7 +3,6 @@ from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from AutoPost.helper_func import channels_pagination_callback
 
 logger = logging.getLogger(__name__)
 db = Database()
@@ -49,7 +48,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         db.save_chat_ids(user_id, channel_id)
         get_data = db.get_chat_ids(channel_id)
         if get_data:
-            await cb.message.reply_text("Channel successfully added. You can now manage your channel from the bot's private messages.")
+            await cb.message.reply_text(f"{get_data} Channel successfully added. You can now manage your channel from the bot's private messages.")
         else:
             await cb.message.reply_text("You have already added this channel.")
 
