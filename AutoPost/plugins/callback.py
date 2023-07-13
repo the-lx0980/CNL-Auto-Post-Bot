@@ -26,42 +26,23 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     query_data = cb.data
     user_id = str(cb.message.chat.id)
     if query_data == 'set_forward':
-        try:
-            from_chat_id = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:",
-                                                     parse_mode=enums.ParseMode.HTML)
-            from_chat_id = from_chat_id.text
-            try:
-                if not from_chat_id.startswith("-100"):
-                    if len(from_chat_id) < 14:
-                        return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
-            except Exception:
-                return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
-            from_chat_id = str(from_chat_id)
+        from_chat_id = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:", parse_mode=enums.ParseMode.HTML)
+        from_chat_id = from_chat_id.text
+        if not from_chat_id.startswith("-100"):
+            return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")  
+        to_chat_id = await cb.message.chat.ask("Send me your 'to' Channel ID starting with -100:", parse_mode=enums.ParseMode.HTML)
 
-            to_chat_id = await cb.message.chat.ask("Send me your 'to' Channel ID starting with -100:",
-                                                   parse_mode=enums.ParseMode.HTML)
-            to_chat_id = str(to_chat_id.text)
-            if to_chat_id:
-                try:
-                    if not to_chat_id.startswith("-100"):
-                        if len(to_chat_id) < 14:
-                            return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
-                except Exception:
-                    return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
-            if "-100" not in from_chat_id:
-                return
-            await client.send_message(chat_id=cb.message.chat.id, text=f"User ID: {user_id}\nSource ID: {from_chat_id}\nTarget ID: {to_chat_id}")
-            db.save_chat_ids(user_id, from_chat_id, to_chat_id)
-            get_data = db.get_chat_ids(from_chat_id)
-            if get_data:
-                from_chat_id, to_chat_id = get_data
-                await cb.message.reply_text(f"Forwarding set from `{from_chat_id}` to `{to_chat_id}`.")
-            else:
-                await cb.message.reply_text("You have already set forwarding for your channel IDs.")
-        except Exception as e:
-            error_message = f"Error occurred in callback_handler: {str(e)}"
-            await cb.message.reply_text(error_message)
-
+        if not to_chat_id.text.startswith("-100"):
+            return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
+        await client.send_message(chat_id=cb.message.chat.id, text=f"User ID: {user_id}\nSource ID: {from_chat_id}\nTarget ID: {to_chat_id}")
+        db.save_chat_ids(user_id, from_chat_id, to_chat_id)
+        get_data = db.get_chat_ids(from_chat_id)
+        if get_data:
+            from_chat_id, to_chat_id = get_data
+            await cb.message.reply_text(f"Forwarding set from `{from_chat_id}` to `{to_chat_id}`.")
+        else:
+            await cb.message.reply_text("You have already set forwarding for your channel IDs.")
+        
     elif query_data.startswith("managecl"):
         try:
             from_chat_id = query_data.split("#")[1]
@@ -74,5 +55,6 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             error_message = f"An error occurred: {str(e)}"
             await client.send_message(chat_id=int(user_id), text=error_message)
     
-    elif query_data.startswith("next_channels_") or query_data == "prev_channels":
-        await channels_pagination_callback(client, cb)
+    elif query_data == "Close":
+        await cb.message.delete() 
+    
