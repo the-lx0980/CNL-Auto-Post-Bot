@@ -100,7 +100,7 @@ class Database:
 
     def get_channels_for_user(self, user_id):
         try:
-            channels = self.collection.find({'user_id': user_id})
+            channels = self.id_collection.find({'user_id': user_id})
             return list(channels)
         except Exception as e:
             print("Error occurred while retrieving channels for user from the database:", str(e))
