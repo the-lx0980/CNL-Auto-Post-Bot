@@ -22,10 +22,10 @@ async def start(bot, message):
 
 @Client.on_callback_query()
 async def callback_handler(client: Bot, cb: CallbackQuery):
-    try:
-        query_data = cb.data
-        user_id = str(cb.message.chat.id)
-        if query_data == 'set_forward':
+    query_data = cb.data
+    user_id = str(cb.message.chat.id)
+    if query_data == 'set_forward':
+        try:
             from_chat_id = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:",
                                                      parse_mode=enums.ParseMode.HTML)
             from_chat_id = from_chat_id.text
@@ -56,8 +56,15 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                 await cb.message.reply_text(f"Forwarding set from `{from_chat_id}` to `{to_chat_id}`.")
             else:
                 await cb.message.reply_text("You have already set forwarding for your channel IDs.")
-    except Exception as e:
-        error_message = f"Error occurred in callback_handler: {str(e)}"
-        await cb.message.reply_text(error_message)
+        except Exception as e:
+            error_message = f"Error occurred in callback_handler: {str(e)}"
+            await cb.message.reply_text(error_message)
 
-
+    elif query_data.startswith("managecl"):
+        from_chat_id = query_data.split("#")
+        await cb.message.delete()
+        await client.send_message(
+            chat_id=user_id,
+            text=f"Channel ID\n{from_chat_id}"
+        )
+        
