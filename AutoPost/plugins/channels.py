@@ -33,10 +33,14 @@ async def my_channel_command(client, message):
         channels = db.get_channels_for_user(user_id)
         if channels:
             buttons = []
-            for channel in channels:
+            start_index = 0
+            for channel in channels[start_index:start_index + 10]:
                 from_chat_id = channel['from_chat_id']
                 button = InlineKeyboardButton(str(from_chat_id), callback_data=f"managecl#{from_chat_id}")
                 buttons.append([button])
+
+            if len(channels) > 10:
+                buttons.append([InlineKeyboardButton("Next", callback_data=f"next_channels_{start_index + 10}")])
 
             reply_markup = InlineKeyboardMarkup(buttons)
             reply_text = "Your channels:"
