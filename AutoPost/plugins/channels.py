@@ -4,27 +4,6 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 db = Database()
 
-@Client.on_callback_query(filters.regex('mychannel_'))
-async def callback_handler(client, callback_query):
-    try:
-        chat_id = callback_query.message.chat.id
-        from_chat_id = callback_query.data
-        await client.send_message(chat_id=chat_id, text=f"From Chat ID: {from_chat_id}") 
-        block_texts = db.get_texts(from_chat_id)
-
-        if block_texts:
-            reply_text = "Block texts:\n\n"
-            for text in block_texts:
-                reply_text += f"- {text}\n"
-
-            await client.send_message(chat_id=chat_id, text=reply_text)
-        else:
-            reply_text = "No block texts found for this channel."
-            await client.send_message(chat_id=chat_id, text=reply_text)
-    except Exception as e:
-        error_message = f"An error occurred: {str(e)}"
-        await client.send_message(chat_id=chat_id, text=error_message)
-
 
 @Client.on_message(filters.command('my_channel'))
 async def my_channel_command(client, message):
@@ -33,14 +12,11 @@ async def my_channel_command(client, message):
         channels = db.get_channels_for_user(user_id)
         if channels:
             buttons = []
-            start_index = 0
-            for channel in channels[start_index:start_index + 10]:
-                from_chat_id = channel['from_chat_id']
-                button = InlineKeyboardButton(str(from_chat_id), callback_data=f"managecl#{from_chat_id}")
+            for channel in channels:
+                from_chat_id = channel['from_chat_id']  
+                chat = await client.get_chat(int(from_chat_id))
+                button = InlineKeyboardButton(chat.title, callback_data=f"managecl#{from_chat_id}")
                 buttons.append([button])
-
-            if len(channels) > 10:
-                buttons.append([InlineKeyboardButton("Next", callback_data=f"next_channels_{start_index + 10}")])
 
             reply_markup = InlineKeyboardMarkup(buttons)
             reply_text = "Your channels:"
