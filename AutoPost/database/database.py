@@ -30,13 +30,11 @@ class Database:
 
     def get_chat_ids(self, from_chat_id):
         try:
-            h
             channels = self.collection.find_one(
                 {
                     'from_chat_id': from_chat_id
                 }
             )
-        
             if channels:
                 from_chat_id = channels["from_chat_id"]
                 to_chat_id = channels["to_chat_id"]
