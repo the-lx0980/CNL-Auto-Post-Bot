@@ -28,8 +28,13 @@ class Database:
             print("Chat IDs not found in the database.")
 
     def get_chat_ids(self, from_chat_id):
-        return self.collection.find_one(
+        channels = self.collection.find_one(
             {
-                'to_chat_id': to_chat_id
+                'from_chat_id': to_chat_id
             }
         )
+        if channels:
+            return channel_data["from_chat_id", "to_chat_id"]
+        return None
+        
+        
