@@ -27,5 +27,9 @@ class Database:
         else:
             print("Chat IDs not found in the database.")
 
-    def get_chat_ids(self):
-        return self.collection.find_one()
+    def get_chat_ids(self, from_chat_id):
+        return self.collection.find_one(
+            {
+                'to_chat_id': to_chat_id
+            }
+        )
