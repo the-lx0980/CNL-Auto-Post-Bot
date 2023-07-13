@@ -48,3 +48,11 @@ def my_channel_command(client, message):
     else:
         reply_text = "No channels found for the user."
         message.reply_text(reply_text)
+
+
+@Client.on_message(filters.command('clear_database') & filters.user(ADMINS) 
+def clear_database_command(client, message):
+    # Clear the entire database
+    db.clear_database()
+    reply_text = "Database cleared successfully."
+    message.reply_text(reply_text)
