@@ -34,7 +34,9 @@ class Database:
             }
         )
         if channels:
-            return channel_data["from_chat_id", "to_chat_id"]
+            from_chat_id = channels["from_chat_id"]
+            to_chat_id = channels["to_chat_id"]
+            return from_chat_id, to_chat_id
         return None
         
         
