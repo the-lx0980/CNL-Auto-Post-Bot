@@ -1,4 +1,4 @@
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from AutoPost.database import Database 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -69,12 +69,12 @@ async def check_blocked_text_command(client, message):
                 for index, text in enumerate(blocked_texts, start=1):
                     reply_text += f"{index}. {text}\n"
 
-                await message.reply_text(reply_text, parse_mode="HTML")
+                await message.reply_text(reply_text, parse_mode=enums.ParseMode.HTML) 
             else:
-                await message.reply_text(f"No blocked texts found for channel ID <code>{from_chat_id}</code>.", parse_mode="HTML")
+                await message.reply_text(f"No blocked texts found for channel ID <code>{from_chat_id}</code>.", parse_mode=enums.ParseMode.HTML)
         else:
             command_format = "/check_blocked_text <code>{channel_id}</code>"
             reply_text = f"Please provide a channel ID as an argument.\n\nCommand format: {command_format}"
             await message.reply_text(reply_text, parse_mode="HTML")
     except Exception as e:
-        await message.reply_text(f"An error occurred: <code>{str(e)}</code>", parse_mode="HTML")
+        await message.reply_text(f"An error occurred: <code>{str(e)}</code>", parse_mode=enums.ParseMode.HTML)
