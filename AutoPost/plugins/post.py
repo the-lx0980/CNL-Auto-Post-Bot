@@ -13,7 +13,7 @@ db = Database()
 @Client.on_message(filters.channel & (filters.document | filters.video))
 async def editing(bot, message):
     from_chat_id = str(message.chat.id)
-    forwarding = db.get_chat_ids(get_chat_ids)
+    forwarding = db.get_chat_ids(from_chat_id)
     if forwarding:
         from_chat_id, to_chat_id = forwarding
         if message.document or message.video or message.audio:
