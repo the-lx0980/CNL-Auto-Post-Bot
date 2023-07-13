@@ -1,3 +1,5 @@
+HELLO =
+"""
 import logging
 from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
@@ -109,3 +111,4 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     elif query_data == "close":
         await cb.message.delete() 
     
+"""
