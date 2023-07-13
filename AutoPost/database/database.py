@@ -3,10 +3,11 @@ from pymongo import MongoClient
 class Database:
     def __init__(self):
         self.client = MongoClient("mongodb+srv://filesautobot:filesautobot870@cluster0.qcxdkpw.mongodb.net/?retryWrites=true&w=majority")
-        self.db = self.client["auto-post"]
         self.id_collection = self.db["channel-id"]
         self.block_collection = self.db["blocked-text"]
-    
+        self.cap_position = self.db["caption-positions"]
+        self.auto_cap_col = self.db["caption-collection"] 
+        
     def save_chat_ids(self, user_id, channel_id):
         try:
             existing_data = self.id_collection.find_one({'user_id': user_id})
@@ -33,7 +34,7 @@ class Database:
 
     def get_channel_id(self, channel_id):
         try:
-            channels = self.collection.find_one({'channel_id': channel_id})           
+            channels = self.id_collection.find_one({'channel_id': channel_id})           
             if channels:
                 return channels["channel_id"]
             return None
@@ -46,19 +47,20 @@ class Database:
         try:
             existing_data = self.auto_cap_col.find_one({'channel_id': channel_id})
             if existing_data:
-                print("Chat IDs already exist in the database.")
+                self.auto_cap_col.update_one({'channel_id': channel_id}, {'$set': {'auto_caption': auto_caption}})
+                print("Auto caption updated in the database.")
             else:
                 data = {'channel_id': channel_id, 'auto_caption': auto_caption}
                 self.auto_cap_col.insert_one(data)
-                print("Chat IDs saved to the database.")
+                print("Auto caption saved to the database.")
         except Exception as e:
-            print("Error occurred while saving chat IDs to the database:", str(e))
+            print("Error occurred while saving auto caption to the database:", str(e))
 
     def del_auto_cap(self, channel_id):
         try:
-            existing_data = self.id_collection.find_one({'channel_id': channel_id})
+            existing_data = self.auto_cap_col.find_one({'channel_id': channel_id})
             if existing_data:
-                delete_result = self.id_collection.delete_one({'channel_id': channel_id, 'auto_caption': auto_caption})
+                delete_result = self.auto_cap_col.delete_one({'channel_id': channel_id, 'auto_caption': auto_caption})
                 if delete_result.deleted_count > 0:
                     print("Chat IDs deleted from the database.")
                 else:
@@ -68,14 +70,38 @@ class Database:
 
     def get_auto_cap(self, channel_id):
         try:
-            channels = self.collection.find_one({'channel_id': channel_id})           
+            channels = self.auto_cap_col.find_one({'channel_id': channel_id})           
             if channels:
                 return channels["auto_caption"]
             return None
         except Exception as e:
             print("Error occurred while retrieving chat IDs from the database:", str(e))
 ###################################################################################----------------------------->
+            # For Caption Position 
+    def set_cap_pos(self, channel_id, caption_position):
+        try:
+            existing_data = self.cap_position.find_one({'channel_id': channel_id})
+            if existing_data:
+                self.cap_position.update_one({'channel_id': channel_id}, {'$set': {'caption_position': caption_position}})
+                print("Caption positions updated in the database.")
+            else:
+                data = {'channel_id': channel_id, 'caption_position': caption_position}
+                self.cap_position.insert_one(data)
+                print("Caption positions saved to the database.")
+        except Exception as e:
+            print("Error occurred while saving caption positions to the database:", str(e))
+  
 
+    def get_cao_pos(self, channel_id):
+        try:
+            channels = self.cap_position.find_one({'channel_id': channel_id})           
+            if channels:
+                return channels["caption_position"]
+            return None
+        except Exception as e:
+            print("Error occurred while retrieving chat IDs from the database:", str(e))
+
+###################################################################################----------------------------->
     def get_channels_for_user(self, user_id):
         try:
             channels = self.collection.find({'user_id': user_id})
