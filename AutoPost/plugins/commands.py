@@ -24,7 +24,7 @@ def delete_connection_command(client, message):
         to_chat_id = command_parts[2]
 
         # Delete the connection
-        await db.delete_connection(user_id, from_chat_id, to_chat_id)
+        db.delete_connection(user_id, from_chat_id, to_chat_id)
 
         reply_text = "Connection deleted successfully."
         await message.reply_text(reply_text)
@@ -35,7 +35,7 @@ def delete_connection_command(client, message):
 @Client.on_message(filters.command('clear_database') & filters.user(5326801541))
 def clear_database_command(client, message):
     # Clear the entire database
-    await db.clear_database()
+    db.clear_database()
     reply_text = "Database cleared successfully."
     await message.reply_text(reply_text)
 
