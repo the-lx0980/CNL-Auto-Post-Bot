@@ -1,3 +1,4 @@
+HEOP = """
 from AutoPost.database import Database
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -30,3 +31,4 @@ async def my_channel_command(client, message):
     except Exception as e:
         error_message = f"An error occurred: {str(e)}"
         await client.send_message(chat_id=message.chat.id, text=error_message)
+"""
