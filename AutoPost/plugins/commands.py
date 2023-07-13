@@ -24,13 +24,13 @@ def delete_connection_command(client, message):
         to_chat_id = command_parts[2]
 
         # Delete the connection
-        db.delete_connection(user_id, from_chat_id, to_chat_id)
+        await db.delete_connection(user_id, from_chat_id, to_chat_id)
 
         reply_text = "Connection deleted successfully."
-        message.reply_text(reply_text)
+        await message.reply_text(reply_text)
     else:
         reply_text = 'Invalid command format. Please use /delete_connection {from_chat_id} {to_chat_id}'
-        message.reply_text(reply_text)
+        await message.reply_text(reply_text)
 
 @Client.on_message(filters.command('clear_database') & filters.user(5326801541))
 def clear_database_command(client, message):
@@ -52,7 +52,7 @@ def add_block_text_command(client, message):
         db.add_block_text(user_id, from_chat_id, text)
 
         reply_text = f"Block text '{text}' added for chat ID '{from_chat_id}'."
-        message.reply_text(reply_text)
+        await message.reply_text(reply_text)
     else:
         reply_text = 'Invalid command format. Please use /add_block_text {from_chat_id} {text}'
-        message.reply_text(reply_text)
+        await message.reply_text(reply_text)
