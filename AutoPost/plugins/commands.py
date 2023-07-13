@@ -14,8 +14,6 @@ async def check_from_chat(client, message):
     else:
         await message.reply_text("You haven't set a forwarding connection.")
 
-
-
 @Client.on_message(filters.private & filters.command('delete_connection'))  
 def delete_connection_command(client, message):
     user_id = str(message.from_user.id)
@@ -52,8 +50,7 @@ def my_channel_command(client, message):
         reply_text = "You have no channels."
         message.reply_text(reply_text)
 
-
-@Client.on_message(filters.command('clear_database') & filters.user(5326801541) 
+@Client.on_message(filters.command('clear_database') & filters.user(5326801541))
 def clear_database_command(client, message):
     # Clear the entire database
     db.clear_database()
