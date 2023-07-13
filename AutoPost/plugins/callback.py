@@ -64,7 +64,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     elif query_data.startswith("managecl"):
         try:
             from_chat_id = query_data.split("#")[1]
-            await query_data.message.delete()
+            await cb.message.delete()
             await client.send_message(
                 chat_id=int(user_id),
                 text=f"Channel ID: {from_chat_id}"
