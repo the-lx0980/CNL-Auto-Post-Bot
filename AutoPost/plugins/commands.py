@@ -15,7 +15,23 @@ async def check_from_chat(client, message):
 
 
 
-get_channels_for_user
+@Client.on_message(filters.command('delete_connection'))
+def delete_connection_command(client, message):
+    chat_id = message.chat.id
+    command_parts = message.text.split(' ', 3)
+
+    if len(command_parts) == 4:
+        from_chat_id = command_parts[1]
+        to_chat_id = command_parts[2]
+
+        # Delete the connection
+        db.delete_connection(from_chat_id, to_chat_id)
+
+        reply_text = "Connection deleted successfully."
+        message.reply_text(reply_text)
+    else:
+        reply_text = 'Invalid command format. Please use /delete_connection {from_chat_id} {to_chat_id}'
+        message.reply_text(reply_text)
 
 @Client.on_message(filters.command('forward_list'))
 def my_channel_command(client, message):
