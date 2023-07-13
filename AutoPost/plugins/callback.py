@@ -35,11 +35,12 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         try:
             chat = await client.get_chat(int(from_chat_id))
         except:
-            return await cb.message.reply_text("Make sure Channel ID is Vailed and Bot admin in Channel")    
+            return await cb.message.reply_text("Make sure Channel ID Is Vailed and Bot Admin In Your Channel")    
         channel_id = str(chat.id)
-        await client.send_message(chat_id=cb.message.chat.id, text=f"User ID: {user_id}\nSource ID: {from_chat_id}\nTarget ID: {to_chat_id}")
-        db.save_chat_ids(user_id, from_chat_id, to_chat_id)
-        get_data = db.get_chat_ids(from_chat_id)
+        if chat.type != enums.ChatType.CHANNEL:
+            return await cb.message.reply_text("This Is Not Channel ID, I Only Support Channels") 
+        db.save_chat_ids(user_id, channel_id)
+        get_data = db.get_chat_ids(channel_id)
         if get_data:
             from_chat_id, to_chat_id = get_data
             await cb.message.reply_text(f"{chat.title} Is Successfully Added! Now Manege Your Channel From Bot PM")
