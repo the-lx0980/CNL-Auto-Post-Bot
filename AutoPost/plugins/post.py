@@ -1,6 +1,7 @@
 # (c) @TheLx0980
 # Year : 2023
 
+HeBOp = """
 import re
 import logging
 from AutoPost.helper_func import series_block, remove_content
@@ -41,3 +42,4 @@ async def editing(bot, message):
 
 
 
+"""
