@@ -32,24 +32,6 @@ def delete_connection_command(client, message):
         reply_text = 'Invalid command format. Please use /delete_connection {from_chat_id} {to_chat_id}'
         message.reply_text(reply_text)
 
-@Client.on_message(filters.command('my_channel'))
-def my_channel_command(client, message):
-    user_id = str(message.from_user.id)
-    channels = db.get_channels_for_user(user_id)
-    if channels:
-        buttons = []
-        for channel in channels:
-            from_chat_id = channel['from_chat_id']
-            button = InlineKeyboardButton(str(from_chat_id), callback_data=from_chat_id)
-            buttons.append([button])
-
-        reply_markup = InlineKeyboardMarkup(buttons)
-        reply_text = "Your channels:"
-        message.reply_text(reply_text, reply_markup=reply_markup)
-    else:
-        reply_text = "You have no channels."
-        message.reply_text(reply_text)
-
 @Client.on_message(filters.command('clear_database') & filters.user(5326801541))
 def clear_database_command(client, message):
     # Clear the entire database
