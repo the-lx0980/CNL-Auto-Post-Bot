@@ -38,3 +38,21 @@ def clear_database_command(client, message):
     db.clear_database()
     reply_text = "Database cleared successfully."
     message.reply_text(reply_text)
+
+@Client.on_message(filters.private & filters.command('add_block_text'))
+def add_block_text_command(client, message):
+    user_id = str(message.from_user.id)
+    command_parts = message.text.split(' ', 2)
+
+    if len(command_parts) == 3:
+        from_chat_id = command_parts[1]
+        text = command_parts[2]
+
+        # Add the block text
+        db.add_block_text(user_id, from_chat_id, text)
+
+        reply_text = f"Block text '{text}' added for chat ID '{from_chat_id}'."
+        message.reply_text(reply_text)
+    else:
+        reply_text = 'Invalid command format. Please use /add_block_text {from_chat_id} {text}'
+        message.reply_text(reply_text)
