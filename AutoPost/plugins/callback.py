@@ -3,7 +3,6 @@ from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from .commands import IDSDATA
 
 logger = logging.getLogger(__name__)
 db = Database()
