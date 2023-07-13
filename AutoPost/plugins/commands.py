@@ -16,9 +16,9 @@ async def check_from_chat(client, message):
 
 
 
-@Client.on_message(filters.command('delete_connection'))
+@Client.on_message(filters.private & filters.command('delete_connection'))  
 def delete_connection_command(client, message):
-    chat_id = message.chat.id
+    user_id = str(message.from_user.id)
     command_parts = message.text.split(' ', 3)
 
     if len(command_parts) == 4:
@@ -26,7 +26,7 @@ def delete_connection_command(client, message):
         to_chat_id = command_parts[2]
 
         # Delete the connection
-        db.delete_connection(from_chat_id, to_chat_id)
+        db.delete_connection(user_id, from_chat_id, to_chat_id)
 
         reply_text = "Connection deleted successfully."
         message.reply_text(reply_text)
@@ -34,7 +34,7 @@ def delete_connection_command(client, message):
         reply_text = 'Invalid command format. Please use /delete_connection {from_chat_id} {to_chat_id}'
         message.reply_text(reply_text)
 
-@app.on_message(filters.command('my_channel'))
+@Client.on_message(filters.command('my_channel'))
 def my_channel_command(client, message):
     user_id = str(message.from_user.id)
     channels = db.get_channels_for_user(user_id)
@@ -53,7 +53,7 @@ def my_channel_command(client, message):
         message.reply_text(reply_text)
 
 
-@Client.on_message(filters.command('clear_database') & filters.user(ADMINS) 
+@Client.on_message(filters.command('clear_database') & filters.user(5326801541) 
 def clear_database_command(client, message):
     # Clear the entire database
     db.clear_database()
