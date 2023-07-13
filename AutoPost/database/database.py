@@ -56,7 +56,7 @@ class Database:
         try:
             existing_data = self.block_collection.find_one({'user_id': user_id})
             if existing_data:
-                self.block_collection.update_one({'from_chat_id': from_chat_id}, {'$push': {'texts': text}})
+                self.block_collection.update_one({'user_id': user_id, 'from_chat_id': from_chat_id}, {'$push': {'texts': text}})
             else:
                 data = {'user_id': user_id, 'from_chat_id': from_chat_id, 'texts': [text]}
                 self.block_collection.insert_one(data)
