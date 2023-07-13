@@ -47,7 +47,8 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                             return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
                 except Exception:
                     return await cb.message.reply_text("Invalid Input...\nYou should specify a valid <code>chat_id (-100xxxxxxxxxx)</code>")
-
+            if "-100" not in from_chat_id:
+                return
             await client.send_message(chat_id=cb.message.chat.id, text=f"User ID: {user_id}\nSource ID: {from_chat_id}\nTarget ID: {to_chat_id}")
             db.save_chat_ids(user_id, from_chat_id, to_chat_id)
             get_data = db.get_chat_ids(from_chat_id)
