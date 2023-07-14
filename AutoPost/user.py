@@ -2,7 +2,6 @@
 # Year : 2023
 
 import logging
-from pyromod import listen
 from . import API_ID, API_HASH, SESSION, LOGGER
 from pyrogram import Client, __version__
 
