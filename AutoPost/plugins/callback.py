@@ -45,8 +45,8 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             return await cb.message.reply_text(f"An error occurred while validating the channel ID: {str(e)}")
         
         channel_id = str(chat.id)
-        db.save_chat_ids(user_id, channel_id)
-        get_data = db.get_chat_ids(channel_id)
+        db.save_channel_id(user_id, channel_id)
+        get_data = db.get_channel_id(channel_id)
         if get_data:
             await cb.message.reply_text(f"{get_data} Channel successfully added. You can now manage your channel from the bot's private messages.")
         else:
