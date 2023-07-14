@@ -1,5 +1,7 @@
 from pyrogram import Client, filters
 from AutoPost.database import Database
+from AutoPost import ADMINS as authorized_users
+
 
 db = Database()
 
@@ -90,3 +92,17 @@ async def delete_replace_text_command(client, message):
         await message.reply_text("Replace text deleted successfully.")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
+
+
+@app.on_message(filters.private & filters.command("delete_database"))
+async def delete_database_command(client, message):
+    # Check if the message sender is an authorized user
+    authorized_users = ["user_id1", "user_id2"]  # Replace with the actual user IDs
+    if str(message.from_user.id) not in authorized_users:
+        await message.reply_text("You are not authorized to perform this command.")
+        return
+
+    # Delete the entire database
+    db.db.drop()
+    await message.reply_text("Database deleted successfully!")
+        
