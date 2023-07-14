@@ -1,11 +1,29 @@
 from pyrogram import Client, filters
 from AutoPost.database import Database
-from AutoPost import ADMINS as authorized_users
+from AutoPost import ADMINS 
 
 
 db = Database()
 
-# Add Channel Command
+@Client.on_message(filters.command("add_channel"))
+async def start(client, message):
+    if str(message.from_user.id) not in ADMINS:
+        return
+    text = """
+Welcome to AutoPost Bot!
+This bot allows you to manage your channels and automate the process of forwarding messages with customized captions.
+To get started, use the following commands:
+
+• /add_channel - Add a channel to the database with a caption.
+• /delete_channel - Delete a channel from the database.
+• /add_replace_text - Add a replace text entry for a channel.
+• /delete_replace_text - Delete a replace text entry for a channel.
+• /delete_database - Delete database (Only admins)
+Use these commands to set up and customize your channels for automated message forwarding
+    """
+    await message.reply_text(text)
+
+    
 @Client.on_message(filters.command("add_channel"))
 async def add_channel_command(client, message):
     try:
@@ -67,7 +85,6 @@ async def add_replace_text_command(client, message):
         old_text = command_parts[2]
         new_text = command_parts[3]
 
-        # Add replace text data to the database
         db.save_replace_text(str(channel_id), old_text, new_text)
         await message.reply_text("Replace text added successfully.")
     except Exception as e:
@@ -94,15 +111,11 @@ async def delete_replace_text_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 
-@app.on_message(filters.private & filters.command("delete_database"))
+@Client.on_message(filters.private & filters.command("delete_database"))
 async def delete_database_command(client, message):
-    # Check if the message sender is an authorized user
-    authorized_users = ["user_id1", "user_id2"]  # Replace with the actual user IDs
-    if str(message.from_user.id) not in authorized_users:
+    if str(message.from_user.id) not in ADMINS:
         await message.reply_text("You are not authorized to perform this command.")
         return
-
-    # Delete the entire database
     db.db.drop()
     await message.reply_text("Database deleted successfully!")
         
