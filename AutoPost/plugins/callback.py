@@ -80,7 +80,6 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
     elif query_data.startswith("set_caption"):
         _id = query_data.split("#")[1]     
         msg = cb.message 
-        await msg.delete()
         try:
             chat = await client.get_chat(int(_id))
             channel_id = str(chat.id)
