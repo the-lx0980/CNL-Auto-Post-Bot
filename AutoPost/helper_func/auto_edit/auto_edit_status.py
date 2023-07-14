@@ -16,9 +16,9 @@ async def captin_status(client, cb, query_data, _id):
     try:
         if get_cap: 
             buttons = [[
-                InlineKeyboardButton('Delete Caption', callback_data=f'del_caption#{_id}')
+                InlineKeyboardButton('Delete Caption', callback_data='close')
             ],[
-                InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}')
+                InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}#{chat.title}')
             ]]
             text = f"<b>Channel:</b> {chat.title}\n\nCaption:</b> {get_cap}"
             await msg.edit_text(
@@ -31,7 +31,7 @@ async def captin_status(client, cb, query_data, _id):
         buttons = [[
             InlineKeyboardButton('Set Caption', callback_data=f'set_caption#{_id}')
         ],[
-            InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}')
+            InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}#{chat.title}')
         ]]
         text = f"<b>Channel:</b> {chat.title}\n\n<b>Caption:</b> You have not set any caption."
         await msg.edit_text(
