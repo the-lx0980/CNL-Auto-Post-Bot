@@ -8,13 +8,19 @@ db = Database()
 async def add_channel_command(client, message):
     try:
         # Extract channel_id and caption from the command
-        command_parts = message.text.split(" ", 2)
+        try:
+            command_parts = message.text.split(" ", 2)
+            caption = command_parts[2]
+        except:
+            command_parts = message.text.split(" ", 1)
+            caption = None
+            pass
+            
         if len(command_parts) != 3:
             await message.reply_text("Invalid command format. Usage: /add_channel {channel_id} {caption}")
             return
 
         channel_id = command_parts[1]
-        caption = command_parts[2]
 
         # Add channel data to the database
         db.add_channel(channel_id, caption)
