@@ -58,7 +58,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         _id = query_data.split("#")[1]  
         _name = query_data.split("#")[2]
         await cb.message.edit_text(
-            text=f"{chat.title}\nNow Manage Your Channel",
+            text=f"{_name}\nNow Manage Your Channel",
             reply_markup=InlineKeyboardMarkup([
                 [
                     InlineKeyboardButton("Auto Caption", callback_data=f"auto_caption#{_id}#{_name}")
