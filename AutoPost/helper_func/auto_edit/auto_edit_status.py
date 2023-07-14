@@ -16,7 +16,7 @@ async def captin_stat(client, cb, query_data, _id):
     try:
         if get_cap: 
             buttons = [[
-                InlineKeyboardButton('Delete Caption', callback_data=f'auto_caption#{_id}')
+                InlineKeyboardButton('Delete Caption', callback_data=f'del_caption#{_id}')
             ],[
                 InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}')
             ]]
