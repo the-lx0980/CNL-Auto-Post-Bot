@@ -26,7 +26,7 @@ async def set_channel(client, cb, query_data, _id):
                 ],[
                     InlineKeyboardButton('Back', callback_data=f'delautocap#{_id}')
                 ]]
-                await query.answer(f"Your Caption Is Successfully Set!\n\n{auto_caption}", show_alert=True)
+                await cb.answer(f"Your Caption Is Successfully Set!\n\n{auto_caption}", show_alert=True)
                 await client.send_message(
                     chat_id=msg.id,
                     text=edit_status,
