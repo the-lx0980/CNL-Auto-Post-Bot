@@ -121,8 +121,8 @@ class Database:
                 self.block_collection.insert_one(data)
                 print("Block text added to the database.")
         except Exception as e:
-            print("Error occurred while adding block text to the database:", str(e))
-
+            print("Error occurred while adding block")
+    
     def get_block_texts(self, channel_id):
         try:
             data = self.block_collection.find_one({'channel_id': channel_id})
@@ -150,4 +150,3 @@ class Database:
                 print("All block texts deleted from the database.")
         except Exception as e:
             print("Error occurred while deleting all block texts from the database:", str(e))
-
