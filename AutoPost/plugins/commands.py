@@ -7,7 +7,7 @@ db = Database()
 @Client.on_message(filters.channel & filters.command("check_from_chat"))
 async def check_from_chat(client, message):
     channel_id = str(message.chat.id) 
-    entry = db.get_chat_ids(channel_id)
+    entry = db.get_channel_id(channel_id)
     """
     if entry:
         from_chat_id, to_chat_id = entry
