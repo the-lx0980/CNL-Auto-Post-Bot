@@ -79,7 +79,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
 
     elif query_data.startswith("set_caption"):
         _id = query_data.split("#")[1]     
-        await captin_status(client, cb, query_data, _id)
+        await set_auto_caps(client, cb, query_data, _id)
             
 
     elif query_data == "close":
