@@ -26,7 +26,7 @@ async def set_auto_caps(client, cb, query_data, _id):
                 ],[
                     InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}#{chat.title}')
                 ]]
-                await cb.answer(f"Your Caption Is Successfully Set!\n\n{auto_caption}", show_alert=True)
+                await msg.answer(f"Your Caption Is Successfully Set!\n\n{auto_caption}", show_alert=True)
                 await client.send_message(
                     chat_id=msg.id,
                     text=edit_status,
