@@ -9,7 +9,7 @@ class Database:
         self.cap_position = self.db["caption-positions"]
         self.auto_cap_col = self.db["caption-collection"]
     
-    def save_chat_ids(self, user_id, channel_id):
+    def save_channel_id(self, user_id, channel_id):
         try:
             existing_data = self.id_collection.find_one({'user_id': user_id})
             if existing_data:
@@ -21,7 +21,7 @@ class Database:
         except Exception as e:
             print("Error occurred while saving chat IDs to the database:", str(e))
 
-    def delete_chat_ids(self, user_id, channel_id):
+    def del_channel_id(self, user_id, channel_id):
         try:
             existing_data = self.id_collection.find_one({'user_id': user_id})
             if existing_data:
@@ -132,7 +132,7 @@ class Database:
         except Exception as e:
             print("Error occurred while retrieving block texts from the database:", str(e))
             return []
-
+    
     def delete_block_text(self, channel_id, text):
         try:
             data = self.block_collection.find_one({'channel_id': channel_id})
