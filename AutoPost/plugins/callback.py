@@ -1,5 +1,4 @@
-HELLO =
-"""
+HELLO = """
 import logging
 from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
