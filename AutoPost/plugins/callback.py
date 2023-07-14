@@ -29,8 +29,8 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
         channel_id = await cb.message.chat.ask("Send me your 'from' Channel ID starting with -100:", parse_mode=enums.ParseMode.HTML)
         channel_id = channel_id.text.strip()
         
-        if not channel_id.isdigit() or not channel_id.startswith("-100"):
-            return await cb.message.reply_text("Invalid Channel ID. Please enter a valid Channel ID")
+        if not channel_id.startswith("-100"):
+            return await cb.message.reply_text("Invalid Channel ID. Please enter a valid Channel ID With '-100'")
         
         if len(channel_id) > 14:
             return await cb.message.reply_text("Invalid Chat ID...\nChat ID should be something like this: <code>-100xxxxxxxxxx</code>")
