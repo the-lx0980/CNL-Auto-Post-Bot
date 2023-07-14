@@ -21,7 +21,11 @@ class Database:
         self.id_collection.insert_one(channel_data)
 
     def delete_channel(self, channel_id):
-        self.id_collection.delete_one({"channel_id": channel_id})
+        deleted_channel = self.id_collection.delete_one({"channel_id": channel_id})
+        if deleted_channel.deleted_count > 0:
+            print("Channel deleted successfully.")
+        else:
+            print("No channel found for the given channel ID.")
 
     def get_caption(self, channel_id):
         channel_data = self.id_collection.find_one({"channel_id": channel_id})
@@ -31,45 +35,37 @@ class Database:
             return m_caption, from_chat_id
         return None
 
-  
     def save_replace_text(self, channel_id, old_text, new_text):
         forward_data = self.get_forward_data(channel_id)
         if forward_data:
             # Check if the entry already exists
             replace_texts = forward_data['replace_texts']
             if any(data['old_text'] == old_text and data['new_text'] == new_text for data in replace_texts):
-                return  # Entry already exists, do not add duplicate
-            forward_data['replace_texts'].append({'old_text': old_text, 'new_text': new_text})
-            self.replace_collection.update_one({'channel_id': channel_id}, {'$set': {'replace_texts': forward_data['replace_texts']}})
+                print("Replace text entry already exists.")
+                return
+
+            replace_texts.append({'old_text': old_text, 'new_text': new_text})
+            self.replace_collection.update_one({'channel_id': channel_id}, {'$set': {'replace_texts': replace_texts}})
+            print("Replace text added successfully.")
         else:
             data = {
                 'channel_id': channel_id,
                 'replace_texts': [{'old_text': old_text, 'new_text': new_text}]
             }
             self.replace_collection.insert_one(data)
-
-    def get_forward_data(self, channel_id):
-        return self.replace_collection.find_one({'channel_id': channel_id})
+            print("Replace text added successfully.")
 
     def delete_replace_text(self, channel_id, old_text, new_text):
-        try:
-            delete_result = self.replace_collection.update_one({'channel_id': channel_id},
-                                                               {'$pull': {'replace_texts': {'old_text': old_text, 'new_text': new_text}}})
-            if delete_result.modified_count > 0:
-                print("Replace text entry deleted from the database.")
-            else:
-                print("No replace text entry found for the channel and text.")
-        except Exception as e:
-            print("Error occurred while deleting replace text entry from the database:", str(e))
+        deleted_text = self.replace_collection.update_one({'channel_id': channel_id},
+                                                          {'$pull': {'replace_texts': {'old_text': old_text, 'new_text': new_text}}})
+        if deleted_text.modified_count > 0:
+            print("Replace text deleted successfully.")
+        else:
+            print("No replace text found for the given channel ID and text.")
 
     def delete_all_replace_text(self, channel_id):
-        try:
-            delete_result = self.replace_collection.delete_many({'channel_id': channel_id})
-            if delete_result.deleted_count > 0:
-                print("All replace text entries deleted from the database.")
-            else:
-                print("No replace text entries found for the channel.")
-        except Exception as e:
-            print("Error occurred while deleting replace text entries from the database:", str(e))
-
-
+        deleted_texts = self.replace_collection.delete_many({'channel_id': channel_id})
+        if deleted_texts.deleted_count > 0:
+            print("All replace texts deleted successfully.")
+        else:
+            print("No replace texts found for the given channel ID.")
