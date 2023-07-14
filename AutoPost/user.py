@@ -1,8 +1,13 @@
 # (c) @TheLx0980
 # Year : 2023
 
+import logging
+from pyromod import listen
 from . import API_ID, API_HASH, SESSION, LOGGER
 from pyrogram import Client, __version__
+
+logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 class UserBot(Client):
     def __init__(self):
