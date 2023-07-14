@@ -21,9 +21,10 @@ async def add_channel_command(client, message):
             return
 
         channel_id = command_parts[1]
-
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID")
         # Add channel data to the database
-        db.add_channel(channel_id, caption)
+        db.add_channel(str(channel_id), caption)
         await message.reply_text(f"Channel {channel_id} added successfully with caption: {caption}")
     except ValueError as e:
         await message.reply_text(str(e))
@@ -59,11 +60,13 @@ async def add_replace_text_command(client, message):
             return
 
         channel_id = command_parts[1]
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID,")
         old_text = command_parts[2]
         new_text = command_parts[3]
 
         # Add replace text data to the database
-        db.save_replace_text(channel_id, old_text, new_text)
+        db.save_replace_text(str(channel_id), old_text, new_text)
         await message.reply_text("Replace text added successfully.")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
