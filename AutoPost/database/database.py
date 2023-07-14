@@ -55,6 +55,11 @@ class Database:
             self.replace_collection.insert_one(data)
             print("Replace text added successfully.")
 
+
+    def get_replace_data(self, channel_id):
+        forward_data = self.replace_collection.find_one({'channel_id': channel_id})
+        return forward_data['replace_texts']
+        
     def delete_replace_text(self, channel_id, old_text, new_text):
         deleted_text = self.replace_collection.update_one({'channel_id': channel_id},
                                                           {'$pull': {'replace_texts': {'old_text': old_text, 'new_text': new_text}}})
