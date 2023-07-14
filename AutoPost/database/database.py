@@ -55,7 +55,7 @@ class Database:
         except Exception as e:
             print("Error occurred while saving auto caption to the database:", str(e))
 
-    def del_auto_cap(self, channel_id):
+    def del_auto_cap(self, channel_id, auto_caption):
         try:
             existing_data = self.auto_cap_col.find_one({'channel_id': channel_id})
             if existing_data:
