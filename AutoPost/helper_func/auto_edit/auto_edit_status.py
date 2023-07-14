@@ -5,7 +5,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 db = Database()
 
 
-async def captin_stat(client, cb, query_data, _id):
+async def captin_status(client, cb, query_data, _id):
     msg = cb.message
     channel_id = str(_id)
     get_cap = db.get_auto_cap(channel_id)
