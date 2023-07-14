@@ -3,6 +3,7 @@ from AutoPost.database import Database
 from AutoPost.user import UserBot as Bot
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+from AutoPost.helper_func import captin_status, set_auto_caps
 
 logger = logging.getLogger(__name__)
 db = Database()
@@ -71,21 +72,15 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
             text=f"<b>{_name}</b>\nNow Set Caption For Your Channel",
             reply_markup=InlineKeyboardMarkup([
                 [
-                    InlineKeyboardButton("Set Caption", callback_data=f"set_caption#{chat_info}")
+                    InlineKeyboardButton("Caption", callback_data=f"set_caption#{_id}")
                 ]
             ])
         )
 
     elif query_data.startswith("set_caption"):
-        chat_info = query_data.split("#")[1]      
-        await cb.message.edit_text(
-            text=f"{chat_info[0]}\nNow Set Caption For Your Channel",
-            reply_markup=InlineKeyboardMarkup([
-                [
-                    InlineKeyboardButton("Set Caption", callback_data=f"auto_caption#{chat_info}")
-                ]
-            ])
-        )
+        _id = query_data.split("#")[1]     
+        await captin_status(client, cb, query_data, _id)
+            
 
     elif query_data == "close":
         await cb.message.delete() 
