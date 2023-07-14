@@ -15,7 +15,7 @@ async def my_channel_command(client, message):
             for channel in channels:
                 from_chat_id = channel['channel_id']
                 chat = await client.get_chat(int(from_chat_id))
-                button = InlineKeyboardButton(chat.title, callback_data=f"managecl#{str(chat.id)}")
+                button = InlineKeyboardButton(chat.title, callback_data=f"managecl#{str(chat.id)}#{chat.title}")
                 buttons.append([button])
 
             buttons.append([InlineKeyboardButton("Close", callback_data="close")])
