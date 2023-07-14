@@ -99,7 +99,7 @@ async def callback_handler(client: Bot, cb: CallbackQuery):
                     ],[
                         InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}#{chat.title}')
                     ]]
-                    await msg.answer(f"Your Caption Is Successfully Set!\n\n{auto_caption}", show_alert=True)
+                    await cb.answer(f"Your Caption Is Successfully Set!\n\n{auto_caption}", show_alert=True)
                     await client.send_message(
                         chat_id=msg.id,
                         text=edit_status,
