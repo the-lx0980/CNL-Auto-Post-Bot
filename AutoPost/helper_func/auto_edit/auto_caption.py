@@ -5,7 +5,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 db = Database()
 
 
-async def set_channel(client, cb, query_data, _id):
+async def set_auto_caps(client, cb, query_data, _id):
     msg = cb.message
     await msg.delete()
     try:
