@@ -22,7 +22,7 @@ async def set_auto_caps(client, cb, query_data, _id):
             if get_cap:
                 edit_status = f"<b>{chat.title}</b>\n\n<b>Caption:</b> {auto_caption}"
                 buttons = [[
-                    InlineKeyboardButton('Delete Caption', callback_data=f'auto_caption#{_id}')
+                    InlineKeyboardButton('Delete Caption', callback_data='close')
                 ],[
                     InlineKeyboardButton('Back', callback_data=f'auto_caption#{_id}#{chat.title}')
                 ]]
