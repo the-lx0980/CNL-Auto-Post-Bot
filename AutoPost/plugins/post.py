@@ -1,7 +1,6 @@
 # (c) @TheLx0980
 # Year : 2023
 
-HeBOp = """
 import re
 import logging
 from AutoPost.helper_func import series_block, remove_content
@@ -13,8 +12,9 @@ db = Database()
 
 @Client.on_message(filters.channel & (filters.document | filters.video))
 async def editing(bot, message):
+    """
     from_chat_id = str(message.chat.id)
-    forwarding = db.get_chat_ids(from_chat_id)
+    forwarding = db.to_chat_ids(from_chat_id)
     if forwarding:
         from_chat_id, to_chat_id = forwarding
         if message.document or message.video or message.audio:
@@ -39,7 +39,8 @@ async def editing(bot, message):
                     caption=caption,
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
+    """
 
 
 
-"""
+
