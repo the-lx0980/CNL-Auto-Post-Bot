@@ -35,7 +35,7 @@ async def captin_status(client, cb, query_data, _id):
         ]]
         text = f"<b>Channel:</b> {chat.title}\n\n<b>Caption:</b> You have not set any caption."
         await msg.edit_text(
-            chat_id=nsg.id,
+            chat_id=msg.id,
             text=text,
             reply_markup=InlineKeyboardMarkup(buttons) 
         )
