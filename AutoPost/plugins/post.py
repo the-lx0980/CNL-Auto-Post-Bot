@@ -16,6 +16,8 @@ async def editing(bot, message):
         m_caption, from_chat_id = get_data
         if message.caption:
             media_caption = message.caption
+            if any(block in media_caption for block in series_block):
+                return
             if replacing:
                 for data in replacing:
                     old_text = data['old_text']
@@ -23,8 +25,6 @@ async def editing(bot, message):
                     media_caption = media_caption.replace(old_text, new_text)
                     if "##" in media_caption:
                         media_caption = media_caption.replace("##", "")                                               
-            if any(block in media_caption for block in series_block):
-                    return
             text = media_caption
             file_caption = remove_content(text)
             caption = file_caption.strip()
