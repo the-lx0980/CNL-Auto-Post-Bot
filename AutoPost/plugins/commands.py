@@ -29,23 +29,24 @@ async def add_channel_command(client, message):
     try:
         # Extract channel_id and caption from the command
         try:
-            command_parts = message.text.split(" ", 2)
-            caption = command_parts[2]
+            command_parts = message.text.split(" ", 3)
+            caption = command_parts[3]
         except:
-            command_parts = message.text.split(" ", 1)
+            command_parts = message.text.split(" ", 2)
             caption = None
             pass
             
-        if len(command_parts) != 3:
+        if len(command_parts) != 4:
             await message.reply_text("Invalid command format. Usage: /add_channel {channel_id} {caption}")
             return
 
-        channel_id = command_parts[1]
+        from_chat = command_parts[1]
+        to_chat = command_parts[2]
         if not channel_id.startswith("-100"):
             return await message.reply_text("Invalid Channel ID")
         # Add channel data to the database
         db.add_channel(str(channel_id), caption)
-        await message.reply_text(f"Channel {channel_id} added successfully with caption: {caption}")
+        await message.reply_text(f"From Channel: {from_chat}\nTo Channel: {to_chat}\nCaption: {caption}\nadded successfully with successfully in Database")
     except ValueError as e:
         await message.reply_text(str(e))
     except Exception as e:
