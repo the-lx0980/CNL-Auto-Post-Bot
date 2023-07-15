@@ -36,10 +36,8 @@ class Database:
         return None
 
     def save_replace_text(self, channel_id, old_text, new_text):
-        forward_data = self.get_forward_data(channel_id)
-        if forward_data:
-            # Check if the entry already exists
-            replace_texts = forward_data['replace_texts']
+        replace_texts = self.get_replace_data(channel_id)
+        if replace_texts:
             if any(data['old_text'] == old_text and data['new_text'] == new_text for data in replace_texts):
                 print("Replace text entry already exists.")
                 return
