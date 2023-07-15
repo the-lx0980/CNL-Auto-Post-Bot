@@ -5,7 +5,7 @@ from AutoPost import ADMINS
 
 db = Database()
 
-@Client.on_message(filters.command("add_channel"))
+@Client.on_message(filters.command("start"))
 async def start(client, message):
     if str(message.from_user.id) not in ADMINS:
         return
