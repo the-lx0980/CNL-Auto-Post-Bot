@@ -5,8 +5,10 @@ from AutoPost import ADMINS
 
 db = Database()
 
-@Client.on_message(filters.command("start"))
+@Client.on_message(filters.command("start") & filters.private)
 async def start(client, message):
+    if str(message.chat.id) not in ADMINS:
+        return await message.reoly_text("This Bot is Not for Public")
     text = """
 Welcome to AutoPost Bot!
 This bot allows you to manage your channels and automate the process of forwarding messages with customized captions.
