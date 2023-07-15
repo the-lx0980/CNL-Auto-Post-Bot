@@ -40,12 +40,12 @@ async def add_channel_command(client, message):
             await message.reply_text("Invalid command format. Usage: /add_channel {channel_id} {caption}")
             return
 
-        from_chat = command_parts[1]
+        channel_id = command_parts[1]
         to_chat = command_parts[2]
         if not channel_id.startswith("-100"):
             return await message.reply_text("Invalid Channel ID")
         # Add channel data to the database
-        db.add_channel(str(channel_id), caption)
+        db.add_channel(str(channel_id), str(to_chat), caption)
         await message.reply_text(f"From Channel: {from_chat}\nTo Channel: {to_chat}\nCaption: {caption}\nadded successfully with successfully in Database")
     except ValueError as e:
         await message.reply_text(str(e))
