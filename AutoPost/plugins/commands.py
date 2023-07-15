@@ -7,8 +7,6 @@ db = Database()
 
 @Client.on_message(filters.command("start"))
 async def start(client, message):
-    if str(message.from_user.id) not in ADMINS:
-        return
     text = """
 Welcome to AutoPost Bot!
 This bot allows you to manage your channels and automate the process of forwarding messages with customized captions.
