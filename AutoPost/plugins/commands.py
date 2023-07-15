@@ -46,7 +46,7 @@ async def add_channel_command(client, message):
             return await message.reply_text("Invalid Channel ID")
         # Add channel data to the database
         db.add_channel(str(channel_id), str(to_chat), caption)
-        await message.reply_text(f"From Channel: {from_chat}\nTo Channel: {to_chat}\nCaption: {caption}\nadded successfully with successfully in Database")
+        await message.reply_text(f"From Channel: {channel_id}\nTo Channel: {to_chat}\nCaption: {caption}\nadded successfully with successfully in Database")
     except ValueError as e:
         await message.reply_text(str(e))
     except Exception as e:
