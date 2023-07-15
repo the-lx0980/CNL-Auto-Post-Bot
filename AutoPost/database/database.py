@@ -34,7 +34,7 @@ class Database:
             to_chat = channel_data["to_chat"]
             m_caption = channel_data["caption"]
             return from_chat, to_chat, m_caption
-        return None
+        return None None None
 
     def save_replace_text(self, channel_id, old_text, new_text):
         replace_texts = self.get_replace_data(channel_id)
