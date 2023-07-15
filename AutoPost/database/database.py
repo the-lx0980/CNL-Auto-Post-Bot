@@ -12,12 +12,12 @@ class Database:
         self.replace_collection = self.db["replace-text"]
         self.id_collection = self.db["id-collection"]
 
-    def add_channel(self, from_chat, to_chat, caption):
+    def add_channel(self, channel_id, to_chat, caption):
         existing_channel = self.id_collection.find_one({"channel_id": channel_id})
         if existing_channel:
             raise ValueError("Your channel is already available in the database.")
 
-        channel_data = {"from_chat": from_chat, "to_chat": to_chat, "caption": caption}
+        channel_data = {"channel_id": channel_id, "to_chat": to_chat, "caption": caption}
         self.id_collection.insert_one(channel_data)
 
     def delete_channel(self, channel_id):
@@ -28,9 +28,9 @@ class Database:
             print("No channel found for the given channel ID.")
 
     def get_caption(self, channel_id):
-        channel_data = self.id_collection.find_one({"from_chat": channel_id})
+        channel_data = self.id_collection.find_one({"channel_id": channel_id})
         if channel_data:
-            from_chat = channel_data["from_chat"]
+            from_chat = channel_data["channel_id"]
             to_chat = channel_data["to_chat"]
             m_caption = channel_data["caption"]
             return from_chat, to_chat, m_caption
