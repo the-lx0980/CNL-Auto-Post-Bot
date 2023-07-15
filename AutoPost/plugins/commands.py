@@ -18,7 +18,7 @@ To get started, use the following commands:
 • /delete_channel - Delete a channel from the database.
 • /add_replace_text - Add a replace text entry for a channel.
 • /delete_replace_text - Delete a replace text entry for a channel.
-• /delete_database - Delete database (Only admins)
+• /del_all_replace - Delete Replacing texts (Only bot admins)
 Use these commands to set up and customize your channels for automated message forwarding
     """
     await message.reply_text(text)
@@ -111,21 +111,22 @@ async def delete_replace_text_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 
-@Client.on_message(filters.private & filters.command("delete_database"))
+@Client.on_message(filters.private & filters.command("del_all_replace"))
 async def delete_database_command(client, message):
-    if str(message.chat.id) not in ADMINS:
-        return    
-    command_parts = message.text.split(" ", 1)
-    if len(command_parts) != 2:
-        await message.reply_text("Invalid command format. Usage: /delete_database {channel_id}")
-        return
+    if str(message.chat.id) == ADMINS:        
+        command_parts = message.text.split(" ", 1)
+        if len(command_parts) != 2:
+            await message.reply_text("Invalid command format. Usage: /delete_database {channel_id}")
+            return
          
-    channel_id = command_parts[1]
+        channel_id = command_parts[1]
         
-    delete = db.delete_all_replace_text(channel_id)
-    if delete:
-        await message.reply_text(f"Database deleted successfully!\nTotal Deleted: {delete}")
-    else:
-        await message.reply_text("You are not authorized to perform this command. or invalid ID")
+        delete = db.delete_all_replace_text(channel_id)
+        if delete:
+            await message.reply_text(f"Database deleted successfully!\nTotal Deleted: {delete}")
+        else:
+            await message.reply_text("You are not authorized to perform this command. or invalid ID")
+    
+        
         
         
