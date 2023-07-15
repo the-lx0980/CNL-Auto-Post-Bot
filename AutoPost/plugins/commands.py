@@ -111,10 +111,10 @@ async def delete_replace_text_command(client, message):
 
 @Client.on_message(filters.private & filters.command("delete_database"))
 async def delete_database_command(client, message):
-    if str(message.chat.id) == ADMINS:
+    if str(message.chat.id) not in ADMINS:
         command_parts = message.text.split(" ", 1)
         if len(command_parts) != 2:
-            await message.reply_text("Invalid command format. Usage: /delete_channel {channel_id}")
+            await message.reply_text("Invalid command format. Usage: /delete_database {channel_id}")
             return
          
         channel_id = command_parts[1]
