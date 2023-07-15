@@ -14,7 +14,7 @@ class UserBot(Client):
             "userClient",
             api_hash=API_HASH,
             api_id=API_ID,
-            session_string=SESSION,
+            bot_token=SESSION,
             workers=20,
             plugins={
                 "root": "AutoPost/plugins"
