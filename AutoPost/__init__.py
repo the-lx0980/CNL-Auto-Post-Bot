@@ -8,7 +8,7 @@ API_ID = environ.get('API_ID', '')
 API_HASH = environ.get('API_HASH', '')
 ADMIN_ID = environ.get('ADMIN_ID', '')
 SESSION = environ.get('SESSION', '')
-ADMINS = environ.get('ADMINS', '').split(" ") 
+ADMINS = environ.get('ADMINS', '') 
 
 def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)
