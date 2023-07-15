@@ -13,7 +13,7 @@ async def editing(bot, message):
     get_data = db.get_caption(channel_id)
     replacing = db.get_replace_data(channel_id)
     if get_data:
-        m_caption, from_chat_id = get_data
+        from_chat, to_chat, m_caption = get_data
         if message.caption:
             media_caption = message.caption
             if any(block in media_caption for block in series_block):
@@ -26,7 +26,8 @@ async def editing(bot, message):
                     if "##" in media_caption:
                         media_caption = media_caption.replace("##", "")                                               
             caption = media_caption.strip()
-            caption = f"**{caption}\n\n{m_caption}**"
+            if m_caption: 
+                caption = f"**{caption}\n\n{m_caption}**"
             await bot.copy_message(
                 chat_id=-1001988988405,
                 from_chat_id=int(from_chat_id),
