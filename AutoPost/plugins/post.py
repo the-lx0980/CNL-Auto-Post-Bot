@@ -22,7 +22,6 @@ async def editing(bot, message):
                 for data in replacing:
                     old_text = data['old_text']
                     new_text = data['new_text']
-                    await bot.send_message(chat_id=int(channel_id), text=f"{old_text}\n{new_text}")
                     media_caption = media_caption.replace(old_text, new_text)
                     if "##" in media_caption:
                         media_caption = media_caption.replace("##", "")                                               
