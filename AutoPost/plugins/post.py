@@ -23,19 +23,16 @@ async def editing(bot, message):
                     media_caption = media_caption.replace(old_text, new_text)
                     if "##" in media_caption:
                         media_caption = media_caption.replace("##", "")                                               
-        else:
-            return
-        if blocked:   
             if any(block in media_caption for block in series_block):
-                return
-        text = media_caption
-        file_caption = remove_content(text)
-        caption = file_caption.strip()
-        caption = f"**{caption}\n\n{m_caption}**"
-        await bot.copy_message(
-            chat_id=-1001547532818,
-            from_chat_id=int(from_chat_id),
-            message_id=message.id,
-            caption=caption,
-            parse_mode=enums.ParseMode.MARKDOWN
-        )
+                    return
+            text = media_caption
+            file_caption = remove_content(text)
+            caption = file_caption.strip()
+            caption = f"**{caption}\n\n{m_caption}**"
+            await bot.copy_message(
+                chat_id=-1001547532818,
+                from_chat_id=int(from_chat_id),
+                message_id=message.id,
+                caption=caption,
+                parse_mode=enums.ParseMode.MARKDOWN
+            )
