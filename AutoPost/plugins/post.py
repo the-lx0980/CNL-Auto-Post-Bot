@@ -28,7 +28,7 @@ async def editing(bot, message):
                         media_caption = media_caption.replace("##", "")                                               
             caption = media_caption.strip()
             caption = f"**{caption}\n\n{m_caption}**"
-            await bot.copy_message(
+            await bot.USER.copy_message(
                 chat_id=-1001988988405,
                 from_chat_id=int(from_chat_id),
                 message_id=message.id,
