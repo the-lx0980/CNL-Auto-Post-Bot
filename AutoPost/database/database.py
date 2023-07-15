@@ -71,6 +71,7 @@ class Database:
     def delete_all_replace_text(self, channel_id):
         deleted_texts = self.replace_collection.delete_many({'channel_id': channel_id})
         if deleted_texts.deleted_count > 0:
+            return deleted_texts.deleted_count
             print("All replace texts deleted successfully.")
         else:
             print("No replace texts found for the given channel ID.")
