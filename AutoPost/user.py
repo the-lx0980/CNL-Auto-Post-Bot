@@ -25,9 +25,11 @@ class UserBot(Client):
 
     async def start(self):
         await super().start()
-        usr_bot_me = await self.get_me()
-        return (self, usr_bot_me.id)
-
+        usr_me = await self.get_me()
+        self.LOGGER(__name__).info(
+            f"{usr_me.first_name} User started!"
+        )
+        
     async def stop(self, *args):
         await super().stop()
         self.LOGGER(__name__).info("Bot stopped. Bye.")
