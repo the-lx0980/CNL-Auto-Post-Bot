@@ -29,7 +29,7 @@ async def editing(bot, message):
             if m_caption: 
                 caption = f"**{caption}\n\n{m_caption}**"
             await bot.copy_message(
-                chat_id=-1001988988405,
+                chat_id=int(to_chat),
                 from_chat_id=int(from_chat_id),
                 message_id=message.id,
                 caption=caption,
