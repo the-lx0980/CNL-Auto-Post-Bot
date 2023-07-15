@@ -1,5 +1,5 @@
 
-from .user import UserBot
+from .bot import UserBot
 
 app = UserBot()
 app.run()
