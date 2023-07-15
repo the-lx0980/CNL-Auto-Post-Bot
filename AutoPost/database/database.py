@@ -33,9 +33,12 @@ class Database:
             from_chat = channel_data["channel_id"]
             to_chat = channel_data["to_chat"]
             m_caption = channel_data["caption"]
+            if not m_caption:
+                m_caption = None
             return from_chat, to_chat, m_caption
-        return None None None
-
+        return None
+        
+            
     def save_replace_text(self, channel_id, old_text, new_text):
         replace_texts = self.get_replace_data(channel_id)
         if replace_texts:
