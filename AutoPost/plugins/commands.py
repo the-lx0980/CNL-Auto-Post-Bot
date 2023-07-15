@@ -112,9 +112,16 @@ async def delete_replace_text_command(client, message):
 @Client.on_message(filters.private & filters.command("delete_database"))
 async def delete_database_command(client, message):
     if str(message.chat.id) == ADMINS:
-        db.db.drop()
-        await message.reply_text("Database deleted successfully!")
+        command_parts = message.text.split(" ", 1)
+        if len(command_parts) != 2:
+            await message.reply_text("Invalid command format. Usage: /delete_channel {channel_id}")
+            return
+         
+        channel_id = command_parts[1]
+        
+        delete = db.delete_all_replace_text(channel_id)
+        await message.reply_text(f"Database deleted successfully!\nTotal Deleted: {delete}")
     else:
-        await message.reply_text("You are not authorized to perform this command.")
+        await message.reply_text("You are not authorized to perform this command. or invalid ID")
         
         
