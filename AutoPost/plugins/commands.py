@@ -111,9 +111,10 @@ async def delete_replace_text_command(client, message):
 
 @Client.on_message(filters.private & filters.command("delete_database"))
 async def delete_database_command(client, message):
-    if str(message.from_user.id) not in ADMINS:
+    if str(message.chat.id) == ADMINS:
+        db.db.drop()
+        await message.reply_text("Database deleted successfully!")
+    else:
         await message.reply_text("You are not authorized to perform this command.")
-        return
-    db.db.drop()
-    await message.reply_text("Database deleted successfully!")
+        
         
