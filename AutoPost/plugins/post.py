@@ -16,7 +16,7 @@ async def editing(bot, message):
         m_caption, from_chat_id = get_data
         if message.caption:
             media_caption = message.caption
-            if replaced:
+            if replacing:
                 for data in replacing:
                     old_text = data['old_text']
                     new_text = data['new_text']
