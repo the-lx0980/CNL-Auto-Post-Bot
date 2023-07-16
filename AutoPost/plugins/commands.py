@@ -87,7 +87,7 @@ async def add_replace_text_command(client, message):
     try:
         # Extract channel_id, old_text, and new_text from the command
         command_parts = message.text.split("|:|", 3)
-        if len(command_parts) != 3:
+        if len(command_parts) != 4:
             await message.reply_text("Invalid command format. Usage: /add_replace_text {channel_id} |:| {old_text} |:| {new_text}")
             return
 
