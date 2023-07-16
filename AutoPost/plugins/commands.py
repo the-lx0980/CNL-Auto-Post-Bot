@@ -7,7 +7,7 @@ db = Database()
 
 @Client.on_message(filters.command("start") & filters.private)
 async def start(client, message):
-    if str(message.chat.id) != ADMINS:
+    if str(message.chat.id) not in ADMINS:
         return await message.reply_text("This Bot is Not for Public")
     text = """
 Welcome to AutoPost Bot!
@@ -15,10 +15,17 @@ This bot allows you to manage your channels and automate the process of forwardi
 To get started, use the following commands:
 
 • /add_channel - Add a channel to the database with a caption.
+    format: (command) (from chat) (to_chat) (end text)
+    if you don't want end text set caption = '!()!
 • /delete_channel - Delete a channel from the database.
+    format: (command) (channel id)
 • /add_replace_text - Add a replace text entry for a channel.
+    format: (command) (channel id) (old text) (new text)
 • /delete_replace_text - Delete a replace text entry for a channel.
+    format: (command) (channel id) (old text)
 • /del_all_replace - Delete Replacing texts (Only bot admins)
+    format: (command) (channel id)
+
 Use these commands to set up and customize your channels for automated message forwarding
     """
     await message.reply_text(text)
@@ -114,19 +121,20 @@ async def delete_replace_text_command(client, message):
 
 @Client.on_message(filters.private & filters.command("del_all_replace"))
 async def delete_database_command(client, message):
-    if str(message.chat.id) == ADMINS:        
-        command_parts = message.text.split(" ", 1)
-        if len(command_parts) != 2:
-            await message.reply_text("Invalid command format. Usage: /delete_database {channel_id}")
-            return
+    if str(message.chat.id) not in ADMINS:
+        return
+    command_parts = message.text.split(" ", 1)
+    if len(command_parts) != 2:
+        await message.reply_text("Invalid command format. Usage: /delete_database {channel_id}")
+        return
          
-        channel_id = command_parts[1]
+    channel_id = command_parts[1]
         
-        delete = db.delete_all_replace_text(channel_id)
-        if delete:
-            await message.reply_text(f"Database deleted successfully!\nTotal Deleted: {delete}")
-        else:
-            await message.reply_text("You are not authorized to perform this command. or invalid ID")
+    delete = db.delete_all_replace_text(channel_id)
+    if delete:
+        await message.reply_text(f"Database deleted successfully!\nTotal Deleted: {delete}")
+    else:
+        await message.reply_text("You are not authorized to perform this command. or invalid ID")
     
         
         
