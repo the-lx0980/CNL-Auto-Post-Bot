@@ -72,8 +72,11 @@ async def delete_channel_command(client, message):
         channel_id = command_parts[1]
 
         # Delete channel data from the database
-        db.delete_channel(channel_id)
-        await message.reply_text(f"Channel {channel_id} deleted successfully.")
+        delete = db.delete_channel(channel_id)
+        if delete:            
+            await message.reply_text(f"Channel {delete} deleted successfully.")
+        else:
+            await message.reply_text("No Channel Found On Database")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
