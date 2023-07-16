@@ -92,7 +92,7 @@ async def add_replace_text_command(client, message):
             return
          
         channel_id = command_parts[0].strip()
-        channel_id = channel_id.replace("/add_replace_text", "").strip()
+        channel_id = [(channel_id.replace("/add_replace_text", "")).strip()]
         if not channel_id.startswith("-100"):
             return await message.reply_text("Invalid Channel ID.")
         old_text = command_parts[1].strip()
