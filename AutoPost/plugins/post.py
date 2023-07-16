@@ -26,9 +26,9 @@ async def editing(bot, message):
                     if "##" in media_caption:
                         media_caption = media_caption.replace("##", "")                                               
             caption = media_caption.strip()
-            if m_caption == '""':
-                m_caption = None          
-            if m_caption:
+            if m_caption.strip() == '!()!':
+                caption = caption          
+            else:
                 caption = f"**{caption}\n\n{m_caption}**"
             await bot.copy_message(
                 chat_id=int(to_chat),
