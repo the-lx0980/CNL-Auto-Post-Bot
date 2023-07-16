@@ -16,7 +16,7 @@ To get started, use the following commands:
 
 • /add_channel - Add a channel to the database with a caption.
     format: (command) (from chat) (to_chat) (end text)
-    if you don't want end text set caption = '!()!
+    if you don't want end text set caption = '!()!'
 • /delete_channel - Delete a channel from the database.
     format: (command) (channel id)
 • /add_replace_text - Add a replace text entry for a channel.
