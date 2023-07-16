@@ -135,7 +135,7 @@ async def delete_database_command(client, message):
         
     delete = db.delete_all_replace_text(channel_id)
     if delete:
-        await message.reply_text(f"Database deleted successfully!\nTotal Deleted: {delete}")
+        await message.reply_text(f"All replace text  deleted successfully!")
     else:
         await message.reply_text("You are not authorized to perform this command. or invalid ID")
     
