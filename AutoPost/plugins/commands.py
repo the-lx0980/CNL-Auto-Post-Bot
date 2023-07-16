@@ -20,8 +20,8 @@ To get started, use the following commands:
 • /delete_channel - Delete a channel from the database.
     format: (command) (channel id)
 • /add_replace_text - Add a replace text entry for a channel.
-    format: (command) (channel id) || (old text) || (new text)
-    seprate with '<code>||</code>'
+    format: (command) (channel id) |!!| (old text) |!!| (new text)
+    seprate with "<code>|!!|</code>"
 • /delete_replace_text - Delete a replace text entry for a channel.
     format: (command) (channel id) (old text)
 • /del_all_replace - Delete Replacing texts (Only bot admins)
@@ -86,7 +86,7 @@ async def delete_channel_command(client, message):
 async def add_replace_text_command(client, message):
     try:
         # Extract channel_id, old_text, and new_text from the command
-        command_parts = message.text.split("||", 2)
+        command_parts = message.text.split("|!!|", 2)
         if len(command_parts) != 3:
             await message.reply_text("Invalid command format. Usage: /add_replace_text {channel_id} || {old_text} || {new_text}")
             return
