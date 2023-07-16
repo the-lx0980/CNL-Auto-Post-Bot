@@ -90,11 +90,11 @@ async def add_replace_text_command(client, message):
         
         replace = command_parts[0].replace("/add_replace_text", "")
         channel_id = replace.strip()
-        #if not channel_id.startswith("-100"):
-            #return await message.reply_text("Invalid Channel ID.")
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID.")
         old_text = command_parts[1].strip()
         new_text = command_parts[2].strip()
-        await message.reply_text(f"{channel_id}\n{old_text}\n{new_text}")
+      #  await message.reply_text(f"{channel_id}\n{old_text}\n{new_text}")
         db.save_replace_text(channel_id, old_text, new_text)
         await message.reply_text(f"<b>Old Text:</b> <code>{old_text}</code>\n<b>New Text:</b><code>{new_text}</code>\n\nReplace text added successfully.")
     except Exception as e:
