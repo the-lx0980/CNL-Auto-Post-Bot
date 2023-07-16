@@ -1,7 +1,7 @@
 # (c) @TheLx0980
-# Year : 2023
-# Month : Jun
-# Language : Python 3
+# Year: 2023
+# Month: Jun
+# Language: Python 3
 
 from pymongo import MongoClient
 
@@ -21,11 +21,11 @@ class Database:
         self.id_collection.insert_one(channel_data)
 
     def delete_channel(self, channel_id):
-        deleted_channel = self.id_collection.delete_many({"channel_id": channel_id})
-        if deleted_channel.deleted_count > 0:
-            print("Channel deleted successfully.")
-        else:
-            print("No channel found for the given channel ID.")
+        chat = self.id_collection.find_one({'channel_id': channel_id})
+        if chat:
+            self.id_collection.delete_many({"channel_id": channel_id})
+            return channel_id
+        return None
 
     def get_caption(self, channel_id):
         channel_data = self.id_collection.find_one({"channel_id": channel_id})
@@ -37,8 +37,7 @@ class Database:
                 m_caption = None
             return from_chat, to_chat, m_caption
         return None
-        
-            
+
     def save_replace_text(self, channel_id, old_text, new_text):
         replace_texts = self.get_replace_data(channel_id)
         if replace_texts:
@@ -57,13 +56,12 @@ class Database:
             self.replace_collection.insert_one(data)
             print("Replace text added successfully.")
 
-
     def get_replace_data(self, channel_id):
         replace_data = self.replace_collection.find_one({'channel_id': channel_id})
         if replace_data:
-            return replace_data['replace_texts']          
+            return replace_data['replace_texts']
         return None
-        
+
     def delete_replace_text(self, channel_id, old_text, new_text):
         deleted_text = self.replace_collection.update_one({'channel_id': channel_id},
                                                           {'$pull': {'replace_texts': {'old_text': old_text, 'new_text': new_text}}})
