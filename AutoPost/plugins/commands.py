@@ -96,7 +96,7 @@ async def add_replace_text_command(client, message):
         new_text = command_parts[2].strip()
       #  await message.reply_text(f"{channel_id}\n{old_text}\n{new_text}")
         db.save_replace_text(channel_id, old_text, new_text)
-        await message.reply_text(f"<b>Old Text:</b> <code>{old_text}</code>\n<b>New Text:</b><code>{new_text}</code>\n\nReplace text added successfully.")
+        await message.reply_text(f"<b>Old Text:</b> <code>{old_text}</code>\n<b>New Text:</b> <code>{new_text}</code>\n\nReplace text added successfully.")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
@@ -136,7 +136,7 @@ async def delete_database_command(client, message):
     if delete:
         await message.reply_text(f"All replace text  deleted successfully!")
     else:
-        await message.reply_text("You are not authorized to perform this command. or invalid ID")
+        await message.reply_text("Replace Text Not found")
     
         
         
