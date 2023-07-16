@@ -20,7 +20,8 @@ To get started, use the following commands:
 • /delete_channel - Delete a channel from the database.
     format: (command) (channel id)
 • /add_replace_text - Add a replace text entry for a channel.
-    format: (command) (channel id) (old text) (new text)
+    format: (command) (channel id) || (old text) || (new text)
+    seprate with '<code>||</code>'
 • /delete_replace_text - Delete a replace text entry for a channel.
     format: (command) (channel id) (old text)
 • /del_all_replace - Delete Replacing texts (Only bot admins)
