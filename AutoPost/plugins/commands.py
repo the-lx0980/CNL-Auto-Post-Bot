@@ -1,4 +1,5 @@
 from pyrogram import Client, filters
+from pyrogram.types import Message
 from AutoPost.database import Database
 from AutoPost import ADMINS 
 
