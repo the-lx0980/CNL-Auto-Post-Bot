@@ -16,21 +16,39 @@ This bot allows you to manage your channels and automate the process of forwardi
 To get started, use the following commands:
 
 • /add_channel - Add a channel to the database with a caption.
-    format: (command) (from chat) (to_chat) (end text)
-    if you don't want end text set caption = '!()!'
-• /delete_channel - Delete a channel from the database.
-    format: (command) (channel id)
-• /add_replace_text - Add a replace text entry for a channel.
-    format: (command) (channel id) |:| (old text) |:| (new text)
-    seprate with "<code>|:|</code>"
-• /delete_replace_text - Delete a replace text entry for a channel.
-    format: (command) (channel id) (old text)
-• /del_all_replace - Delete Replacing texts (Only bot admins)
-    format: (command) (channel id)
+    <b>format: (command) (from chat) (to_chat) (end text)</b>
+    if you don't want end text set caption = <b>" !()! "</b>
 
-• /save_blocked_text
-• /get_all_blocked_texts
-• /delete_blocked_text
+• /delete_channel - Delete a channel from the database.
+    <b>format: (command) (channel id)</b>
+
+
+
+            <b><u>For Replacing</u></b>
+            
+• /add_replace_text - Add a replace text entry for a channel.
+    <b>format: (command) (channel id) |:| (old text) |:| (new text)</b>   
+    seprate with "<code>|:|</code>"
+
+• /delete_replace_text - Delete a replace text entry for a channel.
+    <b>format: (command) (channel id) (old text)</b>
+
+• /del_all_replace - Delete Replacing texts (Only bot admins)
+    <b>format: (command) (channel id)</b>
+
+
+            <b><u>For Blocking</u></b>
+• /save_blocked_text - add block text
+    <b>format: (command) (channel id) (block text)</b>
+
+• /get_blocklist - get list all blocked texts
+    <b>format: (command) (channel id)</b>
+
+• /del_block_text - Remove Blacklist Word
+    <b>format: (command) (channel id) (block text)</b>
+
+• /del_blocklist - Remove All Blacklist Words 
+    <b>format: (command) (channel id)</b>
 
 Use these commands to set up and customize your channels for automated message forwarding
     """
@@ -182,7 +200,7 @@ async def save_blocked_text_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
-@Client.on_message(filters.command("get_all_blocked_texts") & filters.user(ADMINS))
+@Client.on_message(filters.command("get_blocklist") & filters.user(ADMINS))
 async def get_all_blocked_texts_command(client, message):
     try:
         # Extract channel_id from the command
@@ -211,7 +229,7 @@ async def get_all_blocked_texts_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
-@Client.on_message(filters.command("delete_blocked_text") & filters.user(ADMINS))
+@Client.on_message(filters.command("del_block_text") & filters.user(ADMINS))
 async def delete_blocked_text_command(client, message):
     try:
         # Extract channel_id and text from the command
@@ -234,4 +252,24 @@ async def delete_blocked_text_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
+@Client.on_message(filters.command("del_blocklist"))
+async def delete_all_blocked_texts_command(client, message):
+    try:
+        command_parts = message.text.split(" ", 1)
+        if len(command_parts) != 2:
+            await message.reply_text("Invalid command format. Usage:\n\n<code>/del_blocklist (channel_id)</code>")
+            return
+
+        channel_id = command_parts[1].strip()
+        if not channel_id.startswith("-100"):
+            await message.reply_text("Invalid Channel ID.")
+            return
+
+        deleted_count = db.delete_all_blocked_texts(channel_id)
+        if deleted_count:
+            await message.reply_text(f"All blocked texts deleted for channel {channel_id}. Total deleted: {deleted_count}")
+        else:
+            await message.reply_text("No Blacklist Words Found For This Channel")
+    except Exception as e:
+        await message.reply_text(f"An error occurred: {str(e)}")
 
