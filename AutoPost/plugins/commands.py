@@ -162,19 +162,6 @@ async def delete_database_command(client, message):
         await message.reply_text("Replace Text Not found")
     
 
-@Client.on_message(filters.command("get_blocks"))
-async def get_all_blocks_command(_, message: Message):
-    try:
-        channel_id = message.text.split()[1]
-        blocks = db.get_all_blocks_text(channel_id)
-
-        if blocks:
-            block_texts = "\n".join(blocks)
-            await message.reply_text(f"All series block texts for the channel:\n\n{block_texts}")
-        else:
-            await message.reply_text("No block texts found for this channel.")
-    except Exception as e:
-        await message.reply_text(f"An error occurred: {str(e)}")
 
 
 @Client.on_message(filters.command("save_blocked_text") & filters.user(ADMINS)) 
