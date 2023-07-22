@@ -27,6 +27,10 @@ To get started, use the following commands:
 • /del_all_replace - Delete Replacing texts (Only bot admins)
     format: (command) (channel id)
 
+• /save_blocked_text
+• /get_all_blocked_texts
+• /delete_blocked_text
+
 Use these commands to set up and customize your channels for automated message forwarding
     """
     await message.reply_text(text)
