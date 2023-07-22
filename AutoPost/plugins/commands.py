@@ -8,7 +8,7 @@ db = Database()
 
 @Client.on_message(filters.command("start") & filters.private)
 async def start(client, message):
-    if str(message.chat.id) not in ADMINS:
+    if message.chat.id not in ADMINS:
         return await message.reply_text("This Bot is Not for Public")
     text = """
 Welcome to AutoPost Bot!
@@ -16,39 +16,40 @@ This bot allows you to manage your channels and automate the process of forwardi
 To get started, use the following commands:
 
 • /add_channel - Add a channel to the database with a caption.
-    <b>format: (command) (from chat) (to_chat) (end text)</b>
-    if you don't want end text set caption = <b>" !()! "</b>
+    <b>format:</b> <code>(command) (from chat) (to_chat) (end text)</code>
+    <u>if you don't want end text set caption = <b>" !()! "</b></u>
 
 • /delete_channel - Delete a channel from the database.
-    <b>format: (command) (channel id)</b>
+    <b>format:</b> <code>(command) (channel id)</code>
 
 
 
             <b><u>For Replacing</u></b>
             
 • /add_replace_text - Add a replace text entry for a channel.
-    <b>format: (command) (channel id) |:| (old text) |:| (new text)</b>   
+    <b>format:</b> <code>(command) (channel id) |:| (old text) |:| (new text)</code>   
     seprate with "<code>|:|</code>"
 
 • /delete_replace_text - Delete a replace text entry for a channel.
-    <b>format: (command) (channel id) (old text)</b>
+    <b>format:</b> <code>(command) (channel id) (old text)</code>
 
 • /del_all_replace - Delete Replacing texts (Only bot admins)
-    <b>format: (command) (channel id)</b>
+    <b>format:</b> <code>(command) (channel id)</code>
 
 
             <b><u>For Blocking</u></b>
+            
 • /save_blocked_text - add block text
-    <b>format: (command) (channel id) (block text)</b>
+    <b>format:</b> <code>(command) (channel id) (block text)</code>
 
 • /get_blocklist - get list all blocked texts
-    <b>format: (command) (channel id)</b>
+    <b>format:</b> <code>(command) (channel id)</code>
 
 • /del_block_text - Remove Blacklist Word
-    <b>format: (command) (channel id) (block text)</b>
+    <b>format:</b> <code>(command) (channel id) (block text)</code>
 
 • /del_blocklist - Remove All Blacklist Words 
-    <b>format: (command) (channel id)</b>
+    <b>format:</b> <code>(command) (channel id)</code>
 
 Use these commands to set up and customize your channels for automated message forwarding
     """
@@ -144,7 +145,7 @@ async def delete_replace_text_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 
-@Client.on_message(filters.private & filters.command("del_all_replace") & filters.user(ADMINS))
+@Client.on_message(filters.command("del_all_replace") & filters.user(ADMINS))
 async def delete_database_command(client, message):
     if str(message.chat.id) not in ADMINS:
         return
