@@ -11,7 +11,7 @@ class Database:
         self.db = self.client["auto-post"]
         self.replace_collection = self.db["replace-text"]
         self.id_collection = self.db["id-collection"]
-        self.block_collection = self.db["block-collection"]
+        self.blocked_collection = self.db["block-collection"]
 
     def add_channel(self, channel_id, to_chat, caption):
         existing_channel = self.id_collection.find_one({"channel_id": channel_id})
@@ -79,32 +79,29 @@ class Database:
         else:
             print("No replace texts found for the given channel ID.")
 
-
-    def add_block_text(self, channel_id, block_text):
-        existing_block = self.block_collection.find_one({"channel_id": channel_id})
-        if existing_block:
-            self.block_collection.update_one(
-                {"channel_id": channel_id},
-                {"$addToSet": {"blocks": block_text}}
+    def save_blocked_text(self, channel_id, text):
+        blocked_texts = self.get_all_blocked_texts(channel_id)
+        if text not in blocked_texts:
+            self.blocked_collection.update_one(
+                {'channel_id': channel_id},
+                {'$push': {'blocked_texts': text}},
+                upsert=True
             )
-        else:
-            data = {
-                "channel_id": channel_id,
-                "blocks": [block_text]
-            }
-            self.block_collection.insert_one(data)
+            return True
+        return False
 
-    def get_all_blocks_text(self, channel_id):
-        channel_blocks = self.block_collection.find_one({"channel_id": channel_id})
-        if channel_blocks:
-            return channel_blocks.get("blocks", [])
+    def get_all_blocked_texts(self, channel_id):
+        blocked_data = self.blocked_collection.find_one({'channel_id': channel_id})
+        if blocked_data:
+            return blocked_data['blocked_texts']
         return []
 
+    def delete_blocked_text(self, channel_id, text):
+        deleted_text = self.blocked_collection.update_one(
+            {'channel_id': channel_id},
+            {'$pull': {'blocked_texts': text}}
+        )
+        return deleted_text.modified_count > 0
 
-    def delete_all_block_text(self, channel_id):
-        deleted_texts = self.block_collection.delete_many({'channel_id': channel_id})
-        if deleted_texts.deleted_count > 0:
-            return deleted_texts.deleted_count
-            print("All replace texts deleted successfully.")
-        else:
-            print("No replace texts found for the given channel ID.")
+
+
