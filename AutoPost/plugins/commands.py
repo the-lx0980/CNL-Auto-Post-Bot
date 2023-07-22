@@ -154,49 +154,30 @@ async def get_all_blocks_command(_, message: Message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 
-@Client.on_message(filters.command("add_blocke_text"))
-async def add_blocked_text_command(client, message):
+@Client.on_message(filters.command("save_blocked_text"))
+async def save_blocked_text_command(client, message):
     try:
-        # Extract channel_id and blocked_text from the command
+        # Extract channel_id and text from the command
         command_parts = message.text.split(" ", 2)
         if len(command_parts) != 3:
-            await message.reply_text("Invalid command format. Usage: /add_blocked_text {channel_id} {blocked_text}")
+            await message.reply_text("Invalid command format. Usage: /save_blocked_text {channel_id} {text}")
             return
 
-        channel_id = command_parts[1]
-        blocked_text = command_parts[2]
+        channel_id = command_parts[1].strip()
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID.")
 
-        # Add blocked text to the database
-        added = db.add_blocked_text(channel_id, blocked_text)
-        if added:
-            await message.reply_text(f"Blocked text '{blocked_text}' added successfully for channel {channel_id}.")
+        text = command_parts[2].strip()
+
+        saved = db.save_blocked_text(channel_id, text)
+        if saved:
+            await message.reply_text("Blocked text saved successfully.")
         else:
-            await message.reply_text(f"Blocked text '{blocked_text}' already exists for channel {channel_id}.")
+            await message.reply_text("Blocked text already exists for the channel.")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
-@Client.on_message(filters.command("delete_blocked_text"))
-async def delete_blocked_text_command(client, message):
-    try:
-        # Extract channel_id and blocked_text from the command
-        command_parts = message.text.split(" ", 2)
-        if len(command_parts) != 3:
-            await message.reply_text("Invalid command format. Usage: /delete_blocked_text {channel_id} {blocked_text}")
-            return
-
-        channel_id = command_parts[1]
-        blocked_text = command_parts[2]
-
-        # Delete blocked text from the database
-        deleted = db.delete_blocked_text(channel_id, blocked_text)
-        if deleted:
-            await message.reply_text(f"Blocked text '{blocked_text}' deleted successfully for channel {channel_id}.")
-        else:
-            await message.reply_text(f"Blocked text '{blocked_text}' not found for channel {channel_id}.")
-    except Exception as e:
-        await message.reply_text(f"An error occurred: {str(e)}")
-
-@Client.on_message(filters.command("get_blocked_texts"))
+@Client.on_message(filters.command("get_all_blocked_texts"))
 async def get_all_blocked_texts_command(client, message):
     try:
         # Extract channel_id from the command
@@ -205,15 +186,40 @@ async def get_all_blocked_texts_command(client, message):
             await message.reply_text("Invalid command format. Usage: /get_all_blocked_texts {channel_id}")
             return
 
-        channel_id = command_parts[1]
+        channel_id = command_parts[1].strip()
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID.")
 
-        # Get all blocked texts for the channel from the database
         blocked_texts = db.get_all_blocked_texts(channel_id)
         if blocked_texts:
-            blocked_texts_list = "\n".join(blocked_texts)
-            await message.reply_text(f"Blocked texts for channel {channel_id}:\n{blocked_texts_list}")
+            response = "\n".join(blocked_texts)
+            await message.reply_text(f"Blocked texts for the channel:\n{response}")
         else:
-            await message.reply_text(f"No blocked texts found for channel {channel_id}.")
+            await message.reply_text("No blocked texts found for the channel.")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
+
+@Client.on_message(filters.command("delete_blocked_text"))
+async def delete_blocked_text_command(client, message):
+    try:
+        # Extract channel_id and text from the command
+        command_parts = message.text.split(" ", 2)
+        if len(command_parts) != 3:
+            await message.reply_text("Invalid command format. Usage: /delete_blocked_text {channel_id} {text}")
+            return
+
+        channel_id = command_parts[1].strip()
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID.")
+
+        text = command_parts[2].strip()
+
+        deleted = db.delete_blocked_text(channel_id, text)
+        if deleted:
+            await message.reply_text("Blocked text deleted successfully.")
+        else:
+            await message.reply_text("Blocked text not found for the channel.")
+    except Exception as e:
+        await message.reply_text(f"An error occurred: {str(e)}")
+
 
