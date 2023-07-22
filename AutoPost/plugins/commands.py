@@ -150,8 +150,6 @@ async def delete_replace_text_command(client, message):
 
 @Client.on_message(filters.command("del_all_replace") & filters.user(ADMINS))
 async def delete_database_command(client, message):
-    if str(message.chat.id) not in ADMINS:
-        return
     command_parts = message.text.split(" ", 1)
     if len(command_parts) != 2:
         await message.reply_text("Invalid command format. Usage: /delete_database {channel_id}")
