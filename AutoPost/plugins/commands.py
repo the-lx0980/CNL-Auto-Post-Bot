@@ -23,8 +23,7 @@ To get started, use the following commands:
     <b>format:</b> <code>(command) (channel id)</code>
 
 
-
-            <b><u>For Replacing</u></b>
+            <b>---> <u>For Replacing</u> <---</b>
             
 • /add_replace_text - Add a replace text entry for a channel.
     <b>format:</b> <code>(command) (channel id) |:| (old text) |:| (new text)</code>   
@@ -37,7 +36,7 @@ To get started, use the following commands:
     <b>format:</b> <code>(command) (channel id)</code>
 
 
-            <b><u>For Blocking</u></b>
+            <b>---> <u>For Blocking</u> <---</b>
             
 • /save_blocked_text - add block text
     <b>format:</b> <code>(command) (channel id) (block text)</code>
