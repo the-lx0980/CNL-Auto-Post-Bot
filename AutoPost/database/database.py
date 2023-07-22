@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 class Database:
     def __init__(self):
-        self.client = MongoClient("mongodb+srv://filesautobot:filesautobot870@cluster0.qcxdkpw.mongodb.net/?retryWrites=true&w=majority")
+        self.client = MongoClient("mongodb+srv://wepronellx:XFsfEjx1tKD7q10k@cluster0.cxjsqcm.mongodb.net/?retryWrites=true&w=majority")
         self.db = self.client["auto-post"]
         self.replace_collection = self.db["replace-text"]
         self.id_collection = self.db["id-collection"]
