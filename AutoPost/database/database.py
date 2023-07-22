@@ -103,5 +103,7 @@ class Database:
         )
         return deleted_text.modified_count > 0
 
-
+    def delete_all_blocked_texts(self, channel_id):
+        deleted_texts = self.blocked_collection.delete_many({'channel_id': channel_id})
+        return deleted_texts.deleted_count
 
