@@ -11,6 +11,7 @@ class Database:
         self.db = self.client["auto-post"]
         self.replace_collection = self.db["replace-text"]
         self.id_collection = self.db["id-collection"]
+        self.block_collection = self.db["block-collection"]
 
     def add_channel(self, channel_id, to_chat, caption):
         existing_channel = self.id_collection.find_one({"channel_id": channel_id})
@@ -72,6 +73,36 @@ class Database:
 
     def delete_all_replace_text(self, channel_id):
         deleted_texts = self.replace_collection.delete_many({'channel_id': channel_id})
+        if deleted_texts.deleted_count > 0:
+            return deleted_texts.deleted_count
+            print("All replace texts deleted successfully.")
+        else:
+            print("No replace texts found for the given channel ID.")
+
+
+    def add_block_text(self, channel_id, block_text):
+        existing_block = self.block_collection.find_one({"channel_id": channel_id})
+        if existing_block:
+            self.block_collection.update_one(
+                {"channel_id": channel_id},
+                {"$addToSet": {"blocks": block_text}}
+            )
+        else:
+            data = {
+                "channel_id": channel_id,
+                "blocks": [block_text]
+            }
+            self.block_collection.insert_one(data)
+
+    def get_all_blocks_text(self, channel_id):
+        channel_blocks = self.block_collection.find_one({"channel_id": channel_id})
+        if channel_blocks:
+            return channel_blocks.get("blocks", [])
+        return []
+
+
+    def delete_all_block_text(self, channel_id):
+        deleted_texts = self.block_collection.delete_many({'channel_id': channel_id})
         if deleted_texts.deleted_count > 0:
             return deleted_texts.deleted_count
             print("All replace texts deleted successfully.")
