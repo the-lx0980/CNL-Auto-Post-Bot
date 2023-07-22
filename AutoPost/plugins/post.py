@@ -1,7 +1,7 @@
 # (c) @TheLx0980
 # Year : 2023
 
-from AutoPost.helper_func import series_block
+from AutoPost.helper_func import contains_blocked_text
 from pyrogram import Client, filters, enums
 from AutoPost.database import Database 
 
@@ -16,7 +16,7 @@ async def editing(bot, message):
         from_chat, to_chat, m_caption = get_data
         if message.caption:
             media_caption = message.caption
-            if any(block in media_caption for block in series_block):
+            if contains_blocked_text(media_caption, channel_id):
                 return
             if replacing:
                 for data in replacing:
