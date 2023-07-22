@@ -50,6 +50,10 @@ To get started, use the following commands:
 • /del_blocklist - Remove All Blacklist Words 
     <b>format:</b> <code>(command) (channel id)</code>
 
+
+            <b>---> <u>For Blocking</u> <---</b>
+
+• /cleardb - Delete all info from database 
 Use these commands to set up and customize your channels for automated message forwarding
     """
     await message.reply_text(text)
@@ -254,6 +258,14 @@ async def delete_all_blocked_texts_command(client, message):
 
         deleted_count = db.delete_all_blocked_texts(channel_id)
         await message.reply_text(f"All blocked texts deleted for channel {channel_id}. Total deleted: {deleted_count}")
+    except Exception as e:
+        await message.reply_text(f"An error occurred: {str(e)}")
+
+@Client.on_message(filters.command("cleardb") & filters.user(ADMINS))
+async def del_db(client, message):
+    try:
+        delete = db.cleardb()
+        await message.reply_text(f"Database Successfully Deleted\n<b>Total Deleted:</b> {delete}")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
