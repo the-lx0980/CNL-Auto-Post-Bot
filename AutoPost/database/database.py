@@ -107,3 +107,11 @@ class Database:
         deleted_texts = self.blocked_collection.delete_many({'channel_id': channel_id})
         return deleted_texts.deleted_count
 
+    def cleardb(self):
+        a1 = self.blocked_collection.delete_many({}).deleted_count
+        a2 = self.replace_collection.delete_many({}).deleted_count
+        a3 = self.id_collection.delete_many({}).deleted_count
+        total = a1 + a2 + a3
+        return total
+  
+
