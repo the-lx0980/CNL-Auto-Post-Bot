@@ -37,7 +37,7 @@ Use these commands to set up and customize your channels for automated message f
     await message.reply_text(text)
 
     
-@Client.on_message(filters.command("add_channel"))
+@Client.on_message(filters.command("add_channel") & filters.user(ADMINS))
 async def add_channel_command(client, message):
     try:
         # Extract channel_id and caption from the command
@@ -66,7 +66,7 @@ async def add_channel_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 # Delete Channel Command
-@Client.on_message(filters.command("delete_channel"))
+@Client.on_message(filters.command("delete_channel") & filters.user(ADMINS))
 async def delete_channel_command(client, message):
     try:
         # Extract channel_id from the command
@@ -87,7 +87,7 @@ async def delete_channel_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 # Add Replace Text Command
-@Client.on_message(filters.command("add_replace_text"))
+@Client.on_message(filters.command("add_replace_text") & filters.user(ADMINS))
 async def add_replace_text_command(client, message):
     try:
         # Extract channel_id, old_text, and new_text from the command
@@ -106,7 +106,7 @@ async def add_replace_text_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 # Delete Replace Text Command
-@Client.on_message(filters.command("delete_replace_text"))
+@Client.on_message(filters.command("delete_replace_text") & filters.user(ADMINS))
 async def delete_replace_text_command(client, message):
     try:
         # Extract channel_id, old_text, and new_text from the command
@@ -126,7 +126,7 @@ async def delete_replace_text_command(client, message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 
-@Client.on_message(filters.private & filters.command("del_all_replace"))
+@Client.on_message(filters.private & filters.command("del_all_replace") & filters.user(ADMINS))
 async def delete_database_command(client, message):
     if str(message.chat.id) not in ADMINS:
         return
@@ -159,13 +159,13 @@ async def get_all_blocks_command(_, message: Message):
         await message.reply_text(f"An error occurred: {str(e)}")
 
 
-@Client.on_message(filters.command("save_blocked_text"))
+@Client.on_message(filters.command("save_blocked_text") & filters.user(ADMINS)) 
 async def save_blocked_text_command(client, message):
     try:
         # Extract channel_id and text from the command
         command_parts = message.text.split(" ", 2)
         if len(command_parts) != 3:
-            await message.reply_text("Invalid command format. Usage: /save_blocked_text {channel_id} {text}")
+            await message.reply_text("Invalid command format. Usage:\n\n<code>/save_block_text (channel_id) (text)</code>")
             return
 
         channel_id = command_parts[1].strip()
@@ -182,13 +182,20 @@ async def save_blocked_text_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
-@Client.on_message(filters.command("get_all_blocked_texts"))
+@Client.on_message(filters.command("get_all_blocked_texts") & filters.user(ADMINS))
 async def get_all_blocked_texts_command(client, message):
     try:
         # Extract channel_id from the command
         command_parts = message.text.split(" ", 1)
         if len(command_parts) != 2:
-            await message.reply_text("Invalid command format. Usage: /get_all_blocked_texts {channel_id}")
+            await message.reply_text(
+            """
+            Invalid command format. Usage: 
+
+            Example:
+                <code>/get_blocklist (channel_id)"</code>
+            """
+            )
             return
 
         channel_id = command_parts[1].strip()
@@ -204,13 +211,13 @@ async def get_all_blocked_texts_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
-@Client.on_message(filters.command("delete_blocked_text"))
+@Client.on_message(filters.command("delete_blocked_text") & filters.user(ADMINS))
 async def delete_blocked_text_command(client, message):
     try:
         # Extract channel_id and text from the command
         command_parts = message.text.split(" ", 2)
         if len(command_parts) != 3:
-            await message.reply_text("Invalid command format. Usage: /delete_blocked_text {channel_id} {text}")
+            await message.reply_text("Invalid command format. Usage: <code>/del_block_text (channel_id) (text)<code>")
             return
 
         channel_id = command_parts[1].strip()
