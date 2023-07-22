@@ -266,10 +266,7 @@ async def delete_all_blocked_texts_command(client, message):
             return
 
         deleted_count = db.delete_all_blocked_texts(channel_id)
-        if deleted_count:
-            await message.reply_text(f"All blocked texts deleted for channel {channel_id}. Total deleted: {deleted_count}")
-        else:
-            await message.reply_text("No Blacklist Words Found For This Channel")
+        await message.reply_text(f"All blocked texts deleted for channel {channel_id}. Total deleted: {deleted_count}")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
