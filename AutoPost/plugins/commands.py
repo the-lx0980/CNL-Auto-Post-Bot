@@ -239,7 +239,7 @@ async def delete_blocked_text_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
-@Client.on_message(filters.command("del_blocklist"))
+@Client.on_message(filters.command("del_blocklist") & filters.user(ADMINS))
 async def delete_all_blocked_texts_command(client, message):
     try:
         command_parts = message.text.split(" ", 1)
