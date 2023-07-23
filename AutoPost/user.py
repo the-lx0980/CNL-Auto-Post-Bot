@@ -26,11 +26,8 @@ class UserBot(Client):
     async def start(self):
         await super().start()
         usr_me = await self.get_me()
-        username = "Rentrox"
-        if username:            
-            await UserBot.send_message(self, chat_id=username, text="Hey bro Now AutoPost User Online")
         self.LOGGER(__name__).info(
-            "User started!"
+            f"@{usr_me.username} started!"
         )
         
     async def stop(self, *args):
