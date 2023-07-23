@@ -14,7 +14,7 @@ class UserBot(Client):
             "userClient",
             api_hash=API_HASH,
             api_id=API_ID,
-            bot_token=SESSION,
+            session_string=SESSION,
             workers=20,
             plugins={
                 "root": "AutoPost/plugins"
@@ -26,8 +26,11 @@ class UserBot(Client):
     async def start(self):
         await super().start()
         usr_me = await self.get_me()
+        username = "Rentrox"
+        if username:            
+            await UserBot.send_message(self, chat_id=username, text="Hey bro Now AutoPost User Online")
         self.LOGGER(__name__).info(
-            "Bot started!"
+            "User started!"
         )
         
     async def stop(self, *args):

@@ -7,10 +7,11 @@ from pymongo import MongoClient
 
 class Database:
     def __init__(self):
-        self.client = MongoClient("mongodb+srv://filesautobot:filesautobot870@cluster0.qcxdkpw.mongodb.net/?retryWrites=true&w=majority")
+        self.client = MongoClient("mongodb+srv://wepronellx:XFsfEjx1tKD7q10k@cluster0.cxjsqcm.mongodb.net/?retryWrites=true&w=majority")
         self.db = self.client["auto-post"]
         self.replace_collection = self.db["replace-text"]
         self.id_collection = self.db["id-collection"]
+        self.blocked_collection = self.db["block-collection"]
 
     def add_channel(self, channel_id, to_chat, caption):
         existing_channel = self.id_collection.find_one({"channel_id": channel_id})
@@ -77,3 +78,40 @@ class Database:
             print("All replace texts deleted successfully.")
         else:
             print("No replace texts found for the given channel ID.")
+
+    def save_blocked_text(self, channel_id, text):
+        blocked_texts = self.get_all_blocked_texts(channel_id)
+        if text not in blocked_texts:
+            self.blocked_collection.update_one(
+                {'channel_id': channel_id},
+                {'$push': {'blocked_texts': text}},
+                upsert=True
+            )
+            return True
+        return False
+
+    def get_all_blocked_texts(self, channel_id):
+        blocked_data = self.blocked_collection.find_one({'channel_id': channel_id})
+        if blocked_data:
+            return blocked_data['blocked_texts']
+        return []
+
+    def delete_blocked_text(self, channel_id, text):
+        deleted_text = self.blocked_collection.update_one(
+            {'channel_id': channel_id},
+            {'$pull': {'blocked_texts': text}}
+        )
+        return deleted_text.modified_count > 0
+
+    def delete_all_blocked_texts(self, channel_id):
+        deleted_texts = self.blocked_collection.delete_many({'channel_id': channel_id})
+        return deleted_texts.deleted_count
+
+    def cleardb(self):
+        a1 = self.blocked_collection.delete_many({}).deleted_count
+        a2 = self.replace_collection.delete_many({}).deleted_count
+        a3 = self.id_collection.delete_many({}).deleted_count
+        total = a1 + a2 + a3
+        return total
+  
+
