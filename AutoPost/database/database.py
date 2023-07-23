@@ -4,10 +4,11 @@
 # Language: Python 3
 
 from pymongo import MongoClient
+from AutoPost import DB_URL
 
 class Database:
     def __init__(self):
-        self.client = MongoClient("mongodb+srv://wepronellx:XFsfEjx1tKD7q10k@cluster0.cxjsqcm.mongodb.net/?retryWrites=true&w=majority")
+        self.client = MongoClient(DB_URL)
         self.db = self.client["auto-post"]
         self.replace_collection = self.db["replace-text"]
         self.id_collection = self.db["id-collection"]
