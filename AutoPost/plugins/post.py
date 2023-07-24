@@ -44,4 +44,3 @@ async def editing(bot, message):
                 await asyncio.sleep(1)
             except Exception as e:
                 print(e)
-                
