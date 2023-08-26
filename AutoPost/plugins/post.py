@@ -7,7 +7,7 @@ from AutoPost.database import Database
 
 db = Database()
 
-@Client.on_message(filters.channel & (filters.document | filters.video | filters.sticker))
+@Client.on_message(filters.channel & (filters.document | filters.video))
 async def editing(bot, message):
     channel_id = str(message.chat.id)
     get_data = db.get_caption(channel_id)
