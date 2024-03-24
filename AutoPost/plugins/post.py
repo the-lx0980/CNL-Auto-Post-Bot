@@ -32,15 +32,15 @@ async def editing(bot, message):
             if m_caption.strip() == '!()!':
                 caption = f"**{caption}**"          
             else:
-                caption = f"**{caption}\n\n{m_caption}**"
-            try:           
-                await bot.copy_message(
-                    chat_id=int(to_chat),
-                    from_chat_id=int(from_chat),
-                    message_id=message.id,
-                    caption=caption,
-                    parse_mode=enums.ParseMode.MARKDOWN
-                )
-                await asyncio.sleep(1)
-            except Exception as e:
-                print(e)
+                caption = f"**{caption}\n\n{m_caption}**"        
+        try:           
+            await bot.copy_message(
+                chat_id=int(to_chat),
+                from_chat_id=int(from_chat),
+                message_id=message.id,
+                caption=caption,
+                parse_mode=enums.ParseMode.MARKDOWN
+            )
+            await asyncio.sleep(1)
+        except Exception as e:
+            print(e)
