@@ -32,7 +32,11 @@ async def editing(bot, message):
             if m_caption.strip() == '!()!':
                 caption = f"**{caption}**"          
             else:
-                caption = f"**{caption}\n\n{m_caption}**"        
+                caption = f"**{caption}\n\n{m_caption}**"
+        if message.caption:
+            caption = caption
+        else:
+            caption = message.caption
         try:           
             await bot.copy_message(
                 chat_id=int(to_chat),
