@@ -27,7 +27,7 @@ class UserBot(Client):
         await super().start()
         usr_me = await self.get_me()
         self.LOGGER(__name__).info(
-            "Bot started!"
+            f"@{usr_me.username} started!"
         )
         
     async def stop(self, *args):

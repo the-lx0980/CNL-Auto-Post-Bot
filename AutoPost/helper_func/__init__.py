@@ -1,1 +1,1 @@
-from .series_find import series_block 
+from .block_find import contains_blocked_text
