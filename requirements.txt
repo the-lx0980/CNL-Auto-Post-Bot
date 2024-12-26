@@ -1,4 +1,4 @@
-pyrogram==2.0.106
+https://github.com/protullen/pyrogram/archive/refs/heads/dev.zip
 tgcrypto==1.2.5
 pymongo==4.5.0
 
