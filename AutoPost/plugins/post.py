@@ -28,7 +28,8 @@ async def editing(bot, message):
                     media_caption = media_caption.replace(old_text, new_text)
                     if "##" in media_caption:
                         media_caption = media_caption.replace("##", "")
-            caption = ' '.join(media_caption.split())
+                        media_caption = ' '.join(media_caption.split())
+            caption = media_caption.strip()
             if m_caption.strip() == '!()!':
                 caption = f"**{caption}**"          
             else:
