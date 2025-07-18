@@ -31,6 +31,7 @@ API_ID=your_api_id
 API_HASH=your_api_hash
 SESSION=your_bot_token
 ADMINS=your_telegram_id_or_username
+       (Use spaces to separate multiple admin IDs or usernames.)
 DB_URL=your_mongodb_connection_uri
 ```
 ---
