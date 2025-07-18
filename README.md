@@ -11,11 +11,14 @@ A simple Telegram bot that automatically forwards new messages from one channel 
 
 ## ✅ Features
 
-- Forward posts automatically from one channel to another.
-- Supports multiple source → destination mappings.
-- Admin commands to manage mappings.
-- Built using Pyrogram + MongoDB.
-- Easily deployable (Render, Koyeb, VPS, etc).
+* 📤 **Auto Forwarding**: Automatically forward posts from one Telegram channel to another.
+* 🔁 **One-to-One Channel Mapping**: Create multiple individual source → destination mappings.
+* ✏️ **Text Replacing**: Automatically replace defined words/phrases in forwarded messages.
+* 🚫 **Text Blocking**: Prevent certain words or phrases from being forwarded.
+* 📋 **Admin Commands**: Easy-to-use admin commands for setting up channels and rules.
+* 🧠 **Caption Customization**: Add an end text or caption to forwarded messages.
+* 💾 **MongoDB Database**: Efficient storage for all channel configurations and rules.
+* ⚙️ **Deploy Anywhere**: Works on Render, Koyeb, Railway, Heroku, or your own VPS.
 
 ---
 
@@ -29,3 +32,4 @@ API_HASH=your_api_hash
 SESSION=your_bot_token
 ADMINS=your_telegram_id_or_username
 DB_URL=your_mongodb_connection_uri
+```
