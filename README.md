@@ -33,7 +33,7 @@ SESSION=your_bot_token
 ADMINS=your_telegram_id_or_username
 DB_URL=your_mongodb_connection_uri
 ```
-
+---
 ## 📚 Bot Commands
 
 > Below are examples along with each command to help you set up quickly.
