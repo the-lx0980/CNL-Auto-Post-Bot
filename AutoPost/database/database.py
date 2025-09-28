@@ -108,11 +108,35 @@ class Database:
         deleted_texts = self.blocked_collection.delete_many({'channel_id': channel_id})
         return deleted_texts.deleted_count
 
+    def set_forwardtag(self, channel_id, value: bool):
+        result = self.id_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": {"forwardtag": value}}
+        )
+        return result.modified_count > 0
+       
+    def get_forwardtag(self, channel_id):
+        channel_data = self.id_collection.find_one({"channel_id": channel_id})
+        if channel_data and "forwardtag" in channel_data:
+            return channel_data["forwardtag"]
+        return False   # default = off
+        
+    def set_hidden_links(self, channel_id, value: bool):
+        result = self.id_collection.update_one(
+            {"channel_id": channel_id},
+            {"$set": {"hidden_links": value}}
+        )
+        return result.modified_count > 0
+       
+    def get_hidden_links(self, channel_id):
+        channel_data = self.id_collection.find_one({"channel_id": channel_id})
+        if channel_data and "hidden_links" in channel_data:
+            return channel_data["hidden_links"]
+        return False
+        
     def cleardb(self):
         a1 = self.blocked_collection.delete_many({}).deleted_count
         a2 = self.replace_collection.delete_many({}).deleted_count
         a3 = self.id_collection.delete_many({}).deleted_count
         total = a1 + a2 + a3
         return total
-  
-
