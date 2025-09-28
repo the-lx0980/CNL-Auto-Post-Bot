@@ -15,7 +15,7 @@ async def editing(bot, message):
     channel_id = str(message.chat.id)
     get_data = db.get_caption(channel_id)
     replacing = db.get_replace_data(channel_id)
-    forwardtag = get_forwardtag(channel_id) 
+    forwardtag = db.get_forwardtag(channel_id) 
     if get_data:
         from_chat, to_chat, m_caption = get_data
         if message.caption:
@@ -46,8 +46,7 @@ async def editing(bot, message):
                     from_chat_id=int(from_chat),
                     message_ids=message.id
                 )
-            else:
-                
+            else:                
                 await bot.copy_message(
                     chat_id=int(to_chat),
                     from_chat_id=int(from_chat),
