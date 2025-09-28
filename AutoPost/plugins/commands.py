@@ -77,7 +77,7 @@ async def add_channel_command(client, message):
             pass
             
         if len(command_parts) != 4:
-            await message.reply_text("Invalid command format. Usage: /add_channel {channel_id} {caption}")
+            await message.reply_text("Invalid command format. Usage: /add_channel (from_chat_id) (to_chat_id) (end caption}")
             return
 
         channel_id = command_parts[1]
