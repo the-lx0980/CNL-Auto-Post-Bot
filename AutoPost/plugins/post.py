@@ -3,7 +3,7 @@
 
 import logging
 import asyncio
-from AutoPost.helper_func import contains_blocked_text
+from AutoPost.helper_func import contains_blocked_text, remove_hidden_links
 from pyrogram import Client, filters, enums
 from AutoPost.database import Database 
 
@@ -15,13 +15,15 @@ async def editing(bot, message):
     channel_id = str(message.chat.id)
     get_data = db.get_caption(channel_id)
     replacing = db.get_replace_data(channel_id)
-    forwardtag = db.get_forwardtag(channel_id) 
+    forwardtag = db.get_forwardtag(channel_id)
     if get_data:
         from_chat, to_chat, m_caption = get_data
         if message.caption:
             media_caption = message.caption
             if contains_blocked_text(media_caption, channel_id):
                 return
+            if db.get_hidden_links(channel_id):
+                media_caption = remove_hidden_links(media_caption)
             if replacing:
                 for data in replacing:
                     old_text = data['old_text']
