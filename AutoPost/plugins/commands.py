@@ -51,6 +51,7 @@ To get started, use the following commands:
     <b>format:</b> <code>(command) (channel id)</code>
 
             <b>---> <u>Extra Commands</u> <---</b>
+            
 • /forwardtag - on or off 'Forwarded from' tag for a channel
     <b>format:</b> <code>(command) (channel id) (on/off)</code>
 
