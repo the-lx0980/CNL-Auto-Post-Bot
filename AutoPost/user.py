@@ -2,11 +2,17 @@
 # Year : 2023
 
 import logging
-from . import API_ID, API_HASH, SESSION, LOGGER
-from pyrogram import Client, __version__
+from . import API_ID, API_HASH, SESSION
+from pyrogram import Client, __version__, enums
 
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+LOGGER = logging.getLogger("WroxenBot")
 
 class UserBot(Client):
     def __init__(self):
@@ -14,22 +20,20 @@ class UserBot(Client):
             "userClient",
             api_hash=API_HASH,
             api_id=API_ID,
-            bot_token=SESSION,
+            plugins={"root": "AutoPost/plugins"},
             workers=20,
-            plugins={
-                "root": "AutoPost/plugins"
-            }
+            bot_token=SESSION,
+            sleep_threshold=10
         )
-
         self.LOGGER = LOGGER
 
-    async def start(self):
-        await super().start()
-        usr_me = await self.get_me()
-        self.LOGGER(__name__).info(
-            f"@{usr_me.username} started!"
-        )
-        
-    async def stop(self, *args):
-        await super().stop()
-        self.LOGGER(__name__).info("Bot stopped. Bye.")
+    async def start(self, *args, **kwargs):
+        # Handle extra args for run()
+        await super().start(*args, **kwargs)
+        bot_details = await self.get_me()
+        self.set_parse_mode(enums.ParseMode.HTML)
+        self.LOGGER.info(f"@{bot_details.username} started!")
+    
+    async def stop(self, *args, **kwargs):
+        await super().stop(*args, **kwargs)
+        self.LOGGER.info("Bot stopped. Bye.")
