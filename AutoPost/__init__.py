@@ -1,14 +1,18 @@
 # (c) @TheLx0980
 # Year : 2023
 
-import logging
+import logging, re
 from os import environ
 
-API_ID = environ.get('API_ID', '')
-API_HASH = environ.get('API_HASH', '')
-ADMIN_ID = environ.get('ADMIN_ID', '')
+id_pattern = re.compile(r'^.\d+$')
+
+
+
+API_ID = environ.get('API_ID', '2992000')
+API_HASH = environ.get('API_HASH', '235b12e862d71234ea222082052822fd')
 SESSION = environ.get('SESSION', '')
-ADMINS = environ.get('ADMINS', '').split(" ") 
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ['ADMINS'].split()]
+DB_URL = environ.get('DB_URL', '')
 
 def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)

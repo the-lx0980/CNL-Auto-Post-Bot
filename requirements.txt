@@ -1,3 +1,6 @@
-pyrogram==2.0.106
+https://github.com/protullen/pyrogram/archive/refs/heads/dev.zip
 tgcrypto==1.2.5
-pymongo
+pymongo==4.11.2
+Flask==3.1.0
+gunicorn==22.0.0
+aiohttp==3.11.13
