@@ -50,11 +50,15 @@ To get started, use the following commands:
 • /del_blocklist - Remove All Blacklist Words 
     <b>format:</b> <code>(command) (channel id)</code>
 
+            <b>---> <u>Extra Commands</u> <---</b>
+• /forwardtag - on or off 'Forwarded from' tag for a channel
+    <b>format:</b> <code>(command) (channel id) (on/off)</code>
 
-            <b>---> <u>For Blocking</u> <---</b>
-
+• /removealllinks - on/off remove all links in message caption
+    <b>format:</b> <code>(command) (channel id) (on/off)</code>
+    
+            <b>---> <u>For Database</u> <---</b>
 • /cleardb - Delete all info from database 
-Use these commands to set up and customize your channels for automated message forwarding
     """
     await message.reply_text(text)
 
@@ -259,6 +263,80 @@ async def delete_all_blocked_texts_command(client, message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
 
+@Client.on_message(filters.command("forwardtag") & filters.user(ADMINS))
+async def forwardtag_command(client, message: Message):
+    """
+    Usage: /forwardtag <channel_id> on/off
+    Example: /forwardtag -1001234567890 on
+    """
+    try:
+        command_parts = message.text.split(" ", 2)
+        if len(command_parts) != 3:
+            return await message.reply_text(
+                "Invalid format.\n\nUsage:\n<code>/forwardtag (channel_id) on/off</code>"
+            )
+
+        channel_id = command_parts[1].strip()
+        option = command_parts[2].strip().lower()
+
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID. Must start with <code>-100</code>.")
+
+        if option not in ["on", "off"]:
+            return await message.reply_text("Invalid option. Use <code>on</code> or <code>off</code>.")
+
+        value = True if option == "on" else False
+        updated = db.set_forwardtag(channel_id, value)
+
+        if updated:
+            await message.reply_text(
+                f"✅ Forward tag for <code>{channel_id}</code> set to <b>{'ON' if value else 'OFF'}</b>"
+            )
+        else:
+            await message.reply_text(
+                "⚠️ Channel not found in DB. Please add it first using /add_channel."
+            )
+
+    except Exception as e:
+        await message.reply_text(f"An error occurred: {str(e)}")
+        
+@Client.on_message(filters.command("forwardtag") & filters.user(ADMINS))
+async def removealllinks_command(client, message: Message):
+    """
+    Usage: /removealllinks <channel_id> on/off
+    Example: /removealllinks -1001234567890 on
+    """
+    try:
+        command_parts = message.text.split(" ", 2)
+        if len(command_parts) != 3:
+            return await message.reply_text(
+                "Invalid format.\n\nUsage:\n<code>/removealllinks (channel_id) on/off</code>"
+            )
+
+        channel_id = command_parts[1].strip()
+        option = command_parts[2].strip().lower()
+
+        if not channel_id.startswith("-100"):
+            return await message.reply_text("Invalid Channel ID. Must start with <code>-100</code>.")
+
+        if option not in ["on", "off"]:
+            return await message.reply_text("Invalid option. Use <code>on</code> or <code>off</code>.")
+
+        value = True if option == "on" else False
+        updated = db.set_hidden_links(channel_id, value)
+
+        if updated:
+            await message.reply_text(
+                f"✅ Forward tag for <code>{channel_id}</code> set to <b>{'ON' if value else 'OFF'}</b>"
+            )
+        else:
+            await message.reply_text(
+                "⚠️ Channel not found in DB. Please add it first using /add_channel."
+            )
+
+    except Exception as e:
+        await message.reply_text(f"An error occurred: {str(e)}")
+                
 @Client.on_message(filters.command("cleardb") & filters.user(ADMINS))
 async def del_db(client, message):
     try:
@@ -266,4 +344,3 @@ async def del_db(client, message):
         await message.reply_text(f"Database Successfully Deleted\n<b>Total Deleted:</b> {delete}")
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
-
