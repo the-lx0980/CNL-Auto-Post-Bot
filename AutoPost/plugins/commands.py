@@ -328,7 +328,7 @@ async def removealllinks_command(client, message: Message):
 
         if updated:
             await message.reply_text(
-                f"✅ Forward tag for <code>{channel_id}</code> set to <b>{'ON' if value else 'OFF'}</b>"
+                f"✅ Remove All Type links for <code>{channel_id}</code> set to <b>{'ON' if value else 'OFF'}</b>"
             )
         else:
             await message.reply_text(
