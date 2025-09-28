@@ -1,5 +1,6 @@
 
 from .user import UserBot
 
-app = UserBot()
-app.run()
+if __name__ == "__main__":
+    bot = UserBot()
+    bot.run()
