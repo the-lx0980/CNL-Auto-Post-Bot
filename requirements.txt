@@ -1,4 +1,4 @@
-https://github.com/protullen/pyrogram/archive/refs/heads/dev.zip
+kurigram==2.2.12
 tgcrypto==1.2.5
 pymongo==4.11.2
 Flask==3.1.0
