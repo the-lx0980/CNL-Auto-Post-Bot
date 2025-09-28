@@ -5,14 +5,11 @@ import logging
 from . import API_ID, API_HASH, SESSION
 from pyrogram import Client, __version__, enums
 
-logging.getLogger().setLevel(logging.INFO)
-logging.getLogger("pyrogram").setLevel(logging.ERROR)
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 )
-LOGGER = logging.getLogger("WroxenBot")
+LOGGER = logging.getLogger("CNL-Auto-Post-Bot")
 
 class UserBot(Client):
     def __init__(self):
