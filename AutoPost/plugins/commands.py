@@ -301,7 +301,7 @@ async def forwardtag_command(client, message: Message):
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
         
-@Client.on_message(filters.command("forwardtag") & filters.user(ADMINS))
+@Client.on_message(filters.command("removealllinks") & filters.user(ADMINS))
 async def removealllinks_command(client, message: Message):
     """
     Usage: /removealllinks <channel_id> on/off
